@@ -27,7 +27,7 @@ public class Post implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "item_level")
-	private String itemLevel;
+	private Byte itemLevel;
 	private String observation;
 	@Column(nullable = false)
 	private Boolean enabled;
