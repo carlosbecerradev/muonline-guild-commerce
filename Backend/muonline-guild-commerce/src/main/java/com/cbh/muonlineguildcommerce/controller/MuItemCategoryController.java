@@ -45,12 +45,12 @@ public class MuItemCategoryController {
 	}
 
 	@PostMapping
-	public ResponseEntity<MuItemCategoryResponse> save(
-			@RequestBody @Valid MuItemCategoryRequest muItemCategoryRequest, BindingResult result) {
-		if(result.hasErrors()) {
+	public ResponseEntity<MuItemCategoryResponse> save(@RequestBody @Valid MuItemCategoryRequest muItemCategoryRequest,
+			BindingResult result) {
+		if (result.hasErrors()) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		if(!muItemCategoryService.validateUniqueConstraints(muItemCategoryRequest)) {
+		if (!muItemCategoryService.validateUniqueConstraints(muItemCategoryRequest)) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
 		}
 		return new ResponseEntity<>(muItemCategoryService.save(muItemCategoryRequest), HttpStatus.CREATED);
@@ -59,10 +59,10 @@ public class MuItemCategoryController {
 	@PutMapping("/{id}")
 	public ResponseEntity<MuItemCategoryResponse> edit(@PathVariable @Positive long id,
 			@RequestBody @Valid MuItemCategoryRequest muItemCategoryRequest, BindingResult result) {
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		if(!muItemCategoryService.validateUniqueConstraints(muItemCategoryRequest)) {
+		if (!muItemCategoryService.validateUniqueConstraints(muItemCategoryRequest)) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
 		}
 		return new ResponseEntity<>(muItemCategoryService.edit(muItemCategoryRequest, id), HttpStatus.OK);
