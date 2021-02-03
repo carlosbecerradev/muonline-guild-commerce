@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cbh.muonlineguildcommerce.dto.request.MuItemCategoryRequest;
 import com.cbh.muonlineguildcommerce.dto.response.MuItemCategoryResponse;
+import com.cbh.muonlineguildcommerce.exception.MuItemCategoryException;
 import com.cbh.muonlineguildcommerce.mapper.MuItemCategoryMapper;
 import com.cbh.muonlineguildcommerce.model.entity.MuItemCategory;
 import com.cbh.muonlineguildcommerce.model.repository.MuItemCategoryRepository;
@@ -32,7 +33,7 @@ public class MuItemCategoryServiceImpl implements MuItemCategoryService {
 	@Transactional(readOnly = true)
 	public MuItemCategoryResponse findOneById(Long id) {
 		MuItemCategory muItemCategory = muItemCategoryRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Mu Item Category with ID - " + id + " is not found"));
+				.orElseThrow(() -> new MuItemCategoryException("Mu Item Category with ID - " + id + " is not found"));
 		return muItemCategoryMapper.mapEntityToDto(muItemCategory);
 	}
 
@@ -48,7 +49,7 @@ public class MuItemCategoryServiceImpl implements MuItemCategoryService {
 	@Transactional
 	public MuItemCategoryResponse edit(MuItemCategoryRequest muItemCategoryRequest, Long id) {
 		MuItemCategory muItemCategory = muItemCategoryRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Mu Item Category with ID - " + id + " is not found"));
+				.orElseThrow(() -> new MuItemCategoryException("Mu Item Category with ID - " + id + " is not found"));
 		muItemCategory = muItemCategoryRepository
 				.save(muItemCategoryMapper.mapToEdit(muItemCategoryRequest, muItemCategory));
 		return muItemCategoryMapper.mapEntityToDto(muItemCategory);
