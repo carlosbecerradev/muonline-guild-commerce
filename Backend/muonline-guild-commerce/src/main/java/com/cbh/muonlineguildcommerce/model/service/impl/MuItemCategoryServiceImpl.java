@@ -53,8 +53,4 @@ public class MuItemCategoryServiceImpl implements MuItemCategoryService {
 				.save(muItemCategoryMapper.mapToEdit(muItemCategoryRequest, muItemCategory));
 		return muItemCategoryMapper.mapEntityToDto(muItemCategory);
 	}
-
-	public boolean validateUniqueConstraints(MuItemCategoryRequest muItemCategoryRequest) {
-		return !muItemCategoryRepository.existsByName(muItemCategoryRequest.getName());
-	}
 }

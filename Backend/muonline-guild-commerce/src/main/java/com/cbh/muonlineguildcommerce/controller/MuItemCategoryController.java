@@ -1,14 +1,12 @@
 package com.cbh.muonlineguildcommerce.controller;
 
 import java.util.List;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,26 +43,14 @@ public class MuItemCategoryController {
 	}
 
 	@PostMapping
-	public ResponseEntity<MuItemCategoryResponse> save(@RequestBody @Valid MuItemCategoryRequest muItemCategoryRequest,
-			BindingResult result) {
-		if (result.hasErrors()) {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-		}
-		if (!muItemCategoryService.validateUniqueConstraints(muItemCategoryRequest)) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
-		}
+	public ResponseEntity<MuItemCategoryResponse> save(
+			@RequestBody @Valid MuItemCategoryRequest muItemCategoryRequest) {
 		return new ResponseEntity<>(muItemCategoryService.save(muItemCategoryRequest), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<MuItemCategoryResponse> edit(@PathVariable @Positive long id,
-			@RequestBody @Valid MuItemCategoryRequest muItemCategoryRequest, BindingResult result) {
-		if (result.hasErrors()) {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-		}
-		if (!muItemCategoryService.validateUniqueConstraints(muItemCategoryRequest)) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
-		}
+			@RequestBody @Valid MuItemCategoryRequest muItemCategoryRequest) {
 		return new ResponseEntity<>(muItemCategoryService.edit(muItemCategoryRequest, id), HttpStatus.OK);
 	}
 }

@@ -13,6 +13,4 @@ public interface MuItemCategoryService {
 	public MuItemCategoryResponse save(MuItemCategoryRequest muItemCategoryRequest);
 
 	public MuItemCategoryResponse edit(MuItemCategoryRequest muItemCategoryRequest, Long id);
-
-	public boolean validateUniqueConstraints(MuItemCategoryRequest muItemCategoryRequest);
 }
