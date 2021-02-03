@@ -50,6 +50,9 @@ public class MuItemCategoryController {
 		if(result.hasErrors()) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
+		if(!muItemCategoryService.validateUniqueConstraints(muItemCategoryRequest)) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+		}
 		return new ResponseEntity<>(muItemCategoryService.save(muItemCategoryRequest), HttpStatus.CREATED);
 	}
 
@@ -58,6 +61,9 @@ public class MuItemCategoryController {
 			@RequestBody @Valid MuItemCategoryRequest muItemCategoryRequest, BindingResult result) {
 		if(result.hasErrors()) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+		if(!muItemCategoryService.validateUniqueConstraints(muItemCategoryRequest)) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
 		}
 		return new ResponseEntity<>(muItemCategoryService.edit(muItemCategoryRequest, id), HttpStatus.OK);
 	}
