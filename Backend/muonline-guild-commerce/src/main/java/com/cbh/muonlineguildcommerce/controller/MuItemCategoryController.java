@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cbh.muonlineguildcommerce.dto.request.MuItemCategoryRequest;
 import com.cbh.muonlineguildcommerce.dto.response.MuItemCategoryResponse;
 import com.cbh.muonlineguildcommerce.exception.ApiError;
-import com.cbh.muonlineguildcommerce.exception.MuItemCategoryException;
+import com.cbh.muonlineguildcommerce.exception.MuItemCategoryNotFound;
 import com.cbh.muonlineguildcommerce.model.service.MuItemCategoryService;
 
 import lombok.AllArgsConstructor;
@@ -79,8 +79,8 @@ public class MuItemCategoryController {
 	}
 
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler(MuItemCategoryException.class)
-	public List<ApiError> handleNotFoundExceptions(MuItemCategoryException ex) {
+	@ExceptionHandler(MuItemCategoryNotFound.class)
+	public List<ApiError> handleNotFoundExceptions(MuItemCategoryNotFound ex) {
 		return Collections.singletonList(new ApiError("mu-item-category.notfound", ex.getMessage()));
 	}
 
