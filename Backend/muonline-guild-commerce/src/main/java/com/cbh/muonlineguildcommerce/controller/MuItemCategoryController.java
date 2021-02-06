@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cbh.muonlineguildcommerce.dto.PageDto;
 import com.cbh.muonlineguildcommerce.dto.request.MuItemCategoryRequest;
 import com.cbh.muonlineguildcommerce.dto.response.MuItemCategoryResponse;
 import com.cbh.muonlineguildcommerce.exception.ApiError;
@@ -39,11 +40,18 @@ public class MuItemCategoryController {
 	private final MuItemCategoryService muItemCategoryService;
 
 	@GetMapping
-	public ResponseEntity<List<MuItemCategoryResponse>> finAll(
+	public ResponseEntity<PageDto<MuItemCategoryResponse>> finAll(
 			@RequestParam(required = false, defaultValue = "0") int page,
 			@RequestParam(required = false, defaultValue = "10") int size) {
-		Page<MuItemCategoryResponse> dtoPage = muItemCategoryService.findAll(page, size);
-		return new ResponseEntity<>(dtoPage.getContent(), HttpStatus.OK);
+		Page<MuItemCategoryResponse> resultPage = muItemCategoryService.findAll(page, size);
+
+		PageDto<MuItemCategoryResponse> pageDto = new PageDto<MuItemCategoryResponse>();
+		PageDto<MuItemCategoryResponse>.PageDescriptionDto pageDescriptionDto = pageDto.new PageDescriptionDto(page, size, resultPage.getTotalPages(), resultPage.getTotalElements());
+		
+		pageDto.setData(resultPage.getContent());;
+		pageDto.setDescription(pageDescriptionDto);
+		
+		return new ResponseEntity<>(pageDto, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
