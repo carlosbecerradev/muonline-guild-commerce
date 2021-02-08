@@ -1,4 +1,4 @@
-package com.cbh.muonlineguildcommerce.dto;
+package com.cbh.muonlineguildcommerce.dto.response;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class PageDto<T> {
+public class PageTemplate<T> {
 	private List<T> data;
 	private PageDescriptionDto description;
 
@@ -20,7 +20,7 @@ public class PageDto<T> {
 	@Getter
 	@Setter
 	public class PageDescriptionDto {
-		private Integer page;
+		private Integer number;
 		private Integer size;
 		private Integer totalPages;
 		private Long totalElements;

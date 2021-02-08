@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cbh.muonlineguildcommerce.dto.PageDto;
 import com.cbh.muonlineguildcommerce.dto.request.MuItemCategoryRequest;
 import com.cbh.muonlineguildcommerce.dto.response.MuItemCategoryResponse;
+import com.cbh.muonlineguildcommerce.dto.response.PageTemplate;
 import com.cbh.muonlineguildcommerce.exception.ApiError;
 import com.cbh.muonlineguildcommerce.exception.MuItemCategoryNotFound;
+import com.cbh.muonlineguildcommerce.mapper.PageTemplateMapper;
 import com.cbh.muonlineguildcommerce.model.service.MuItemCategoryService;
 
 import lombok.AllArgsConstructor;
@@ -38,20 +39,14 @@ import lombok.AllArgsConstructor;
 public class MuItemCategoryController {
 
 	private final MuItemCategoryService muItemCategoryService;
+	private final PageTemplateMapper<MuItemCategoryResponse> pageTemplateMapper;
 
 	@GetMapping
-	public ResponseEntity<PageDto<MuItemCategoryResponse>> finAll(
+	public ResponseEntity<PageTemplate<MuItemCategoryResponse>> finAll(
 			@RequestParam(required = false, defaultValue = "0") int page,
 			@RequestParam(required = false, defaultValue = "10") int size) {
 		Page<MuItemCategoryResponse> resultPage = muItemCategoryService.findAll(page, size);
-
-		PageDto<MuItemCategoryResponse> pageDto = new PageDto<MuItemCategoryResponse>();
-		PageDto<MuItemCategoryResponse>.PageDescriptionDto pageDescriptionDto = pageDto.new PageDescriptionDto(page, size, resultPage.getTotalPages(), resultPage.getTotalElements());
-		
-		pageDto.setData(resultPage.getContent());;
-		pageDto.setDescription(pageDescriptionDto);
-		
-		return new ResponseEntity<>(pageDto, HttpStatus.OK);
+		return new ResponseEntity<>(pageTemplateMapper.map(resultPage), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
