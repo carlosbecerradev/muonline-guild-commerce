@@ -32,8 +32,7 @@ public class MuItemCategoryServiceImpl implements MuItemCategoryService {
 	@Override
 	@Transactional(readOnly = true)
 	public MuItemCategoryResponse findOneById(Long id) {
-		MuItemCategory muItemCategory = muItemCategoryRepository.findById(id)
-				.orElseThrow(() -> new MuItemCategoryNotFound("Mu Item Category with ID - " + id + " is not found"));
+		MuItemCategory muItemCategory = findMuItemCategoryById(id);
 		return muItemCategoryMapper.mapEntityToDto(muItemCategory);
 	}
 
@@ -48,10 +47,15 @@ public class MuItemCategoryServiceImpl implements MuItemCategoryService {
 	@Override
 	@Transactional
 	public MuItemCategoryResponse edit(MuItemCategoryRequest muItemCategoryRequest, Long id) {
-		MuItemCategory muItemCategory = muItemCategoryRepository.findById(id)
-				.orElseThrow(() -> new MuItemCategoryNotFound("Mu Item Category with ID - " + id + " is not found"));
+		MuItemCategory muItemCategory = findMuItemCategoryById(id);
 		muItemCategory = muItemCategoryRepository
 				.save(muItemCategoryMapper.mapToEdit(muItemCategoryRequest, muItemCategory));
 		return muItemCategoryMapper.mapEntityToDto(muItemCategory);
+	}
+
+	@Override
+	public MuItemCategory findMuItemCategoryById(Long id) {
+		return muItemCategoryRepository.findById(id)
+				.orElseThrow(() -> new MuItemCategoryNotFound("Mu Item Category with ID - " + id + " is not found"));
 	}
 }
