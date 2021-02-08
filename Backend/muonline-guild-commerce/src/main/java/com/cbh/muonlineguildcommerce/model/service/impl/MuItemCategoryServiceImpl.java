@@ -54,6 +54,7 @@ public class MuItemCategoryServiceImpl implements MuItemCategoryService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public MuItemCategory findMuItemCategoryById(Long id) {
 		return muItemCategoryRepository.findById(id)
 				.orElseThrow(() -> new MuItemCategoryNotFound("Mu Item Category with ID - " + id + " is not found"));
