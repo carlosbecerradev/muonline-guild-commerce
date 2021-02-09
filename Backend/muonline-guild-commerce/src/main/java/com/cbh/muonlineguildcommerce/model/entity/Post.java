@@ -47,7 +47,7 @@ public class Post implements Serializable {
 	private MuItem muItem;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "mu_option_id", nullable = false)
+	@JoinColumn(name = "mu_item_option_id", nullable = false)
 	private MuItemOption muItemOption;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
