@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -21,27 +20,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
+@Table(name = "authorities")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements Serializable {
+public class Authority implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(unique = true, nullable = false, updatable = false)
-	private String email;
-	@Column(nullable = false, length = 60)
-	private String password;
-	@Column(unique = true, nullable = false, length = 20)
-	private String nickname;
-	@Column(length = 140)
-	private String contact;
+	@Column(unique = true, nullable = false, length = 60)
+	private String type;
 	@Column(nullable = false)
 	private Boolean enabled;
 	@Column(name = "created_date", nullable = false, updatable = false)
 	private Instant createdDate;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Authority> authorities;
+	@ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<User> user;
 }
