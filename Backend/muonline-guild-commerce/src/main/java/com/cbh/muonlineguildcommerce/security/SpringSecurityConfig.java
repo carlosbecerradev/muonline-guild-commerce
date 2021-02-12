@@ -12,6 +12,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.cbh.muonlineguildcommerce.security.service.AuthorizationService;
 
 import lombok.AllArgsConstructor;
 
@@ -21,6 +24,7 @@ import lombok.AllArgsConstructor;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final UserDetailsService userDetailsService;
+	private final AuthorizationService authorizationService;
 
 	@Bean(BeanIds.AUTHENTICATION_MANAGER)
 	@Override
@@ -42,5 +46,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/api/auth/**").permitAll().anyRequest().authenticated().and().csrf()
 				.disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+		http.addFilterBefore(authorizationService, UsernamePasswordAuthenticationFilter.class);
 	}
 }

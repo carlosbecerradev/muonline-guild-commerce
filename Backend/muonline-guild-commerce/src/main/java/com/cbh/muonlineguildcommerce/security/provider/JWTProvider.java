@@ -7,7 +7,10 @@ import java.util.Date;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 
@@ -29,5 +32,23 @@ public class JWTProvider {
 				.signWith(jksProvider.getPrivateKey());
 
 		return jws.compact();
+	}
+	
+	public boolean validateJWT(String jwt) {
+		try {
+			getClaims(jwt);
+			return true;
+		} catch (JwtException | IllegalArgumentException  e) {			
+			return false;
+		}
+	}
+	
+	public Claims getClaims(String jwt) {
+		Jws<Claims> jws  = Jwts.parserBuilder()
+						.setSigningKey(jksProvider.getPublicKey())
+						.build()
+						.parseClaimsJws(jwt);
+		
+		return jws.getBody();
 	}
 }
