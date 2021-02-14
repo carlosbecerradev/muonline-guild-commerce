@@ -15,5 +15,7 @@ public interface MuItemCategoryService {
 
 	public MuItemCategoryResponse edit(MuItemCategoryRequest muItemCategoryRequest, Long id);
 	
+	public void deleteById(Long id);
+
 	public MuItemCategory findMuItemCategoryById(Long id);
 }

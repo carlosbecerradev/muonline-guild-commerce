@@ -58,4 +58,10 @@ public class MuItemServiceImpl implements MuItemService {
 				.orElseThrow(() -> new MuItemNotFound("Mu Item with ID - " + id + " is not found"));
 	}
 
+	@Override
+	@Transactional
+	public void deleteById(Long id) {
+		muItemRepository.deleteById(id);
+	}
+
 }

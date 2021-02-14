@@ -57,4 +57,10 @@ public class MuServerServiceImpl implements MuServerService {
 				.orElseThrow(() -> new MuServerNotFound("Mu Server with ID - " + id + " is not found"));
 	}
 
+	@Override
+	@Transactional
+	public void deleteById(Long id) {
+		muServerRepository.deleteById(id);
+	}
+
 }

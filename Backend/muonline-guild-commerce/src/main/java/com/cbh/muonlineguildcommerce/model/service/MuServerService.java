@@ -15,5 +15,7 @@ public interface MuServerService {
 
 	public MuServerResponse edit(MuServerRequest muServerRequest, Long id);
 
+	public void deleteById(Long id);
+
 	public MuServer findMuServerById(Long id);
 }

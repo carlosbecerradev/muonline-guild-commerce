@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,6 +66,12 @@ public class MuItemController {
 	public ResponseEntity<MuItemResponse> edit(@PathVariable @Positive long id,
 			@RequestBody @Valid MuItemRequest muItemRequest) {
 		return new ResponseEntity<>(muItemService.edit(muItemRequest, id), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteOneById(@PathVariable @Positive long id) {
+		muItemService.deleteById(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

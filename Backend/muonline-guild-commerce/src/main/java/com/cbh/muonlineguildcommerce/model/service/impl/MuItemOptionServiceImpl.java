@@ -57,4 +57,10 @@ public class MuItemOptionServiceImpl implements MuItemOptionService {
 				.orElseThrow(() -> new MuItemOptionNotFound("Mu Item Option with ID - " + id + " is not found"));
 	}
 
+	@Override
+	@Transactional
+	public void deleteById(Long id) {
+		muItemOptionRepository.deleteById(id);
+	}
+
 }

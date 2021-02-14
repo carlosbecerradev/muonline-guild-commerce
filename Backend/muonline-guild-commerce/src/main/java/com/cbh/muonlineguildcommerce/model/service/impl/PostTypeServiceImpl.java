@@ -58,4 +58,10 @@ public class PostTypeServiceImpl implements PostTypeService {
 				.orElseThrow(() -> new PostTypeNotFound("Post Type with ID - " + id + " is not found."));
 	}
 
+	@Override
+	@Transactional
+	public void deleteById(Long id) {
+		postTypeRepository.deleteById(id);
+	}
+
 }

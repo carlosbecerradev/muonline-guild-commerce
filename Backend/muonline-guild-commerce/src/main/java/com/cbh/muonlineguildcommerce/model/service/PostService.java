@@ -15,5 +15,7 @@ public interface PostService {
 
 	public PostResponse edit(PostRequest postRequest, Long id);
 
+	public void deleteById(Long id);
+
 	public Post findPostById(Long id);
 }

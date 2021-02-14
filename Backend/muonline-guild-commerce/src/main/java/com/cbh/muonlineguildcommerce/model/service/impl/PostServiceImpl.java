@@ -58,4 +58,10 @@ public class PostServiceImpl implements PostService {
 				.orElseThrow(() -> new PostNotFound("Post with ID - " + id + " is not found"));
 	}
 
+	@Override
+	@Transactional
+	public void deleteById(Long id) {
+		postRepository.deleteById(id);
+	}
+
 }

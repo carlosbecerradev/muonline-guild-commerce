@@ -15,5 +15,7 @@ public interface PostTypeService {
 
 	public PostTypeResponse edit(PostTypeRequest postTypeRequest, Long id);
 
+	public void deleteById(Long id);
+
 	public PostType findPostTypeById(Long id);
 }

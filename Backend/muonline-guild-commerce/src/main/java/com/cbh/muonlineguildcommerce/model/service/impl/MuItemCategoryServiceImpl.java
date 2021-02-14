@@ -59,4 +59,10 @@ public class MuItemCategoryServiceImpl implements MuItemCategoryService {
 		return muItemCategoryRepository.findById(id)
 				.orElseThrow(() -> new MuItemCategoryNotFound("Mu Item Category with ID - " + id + " is not found"));
 	}
+
+	@Override
+	@Transactional
+	public void deleteById(Long id) {
+		muItemCategoryRepository.deleteById(id);
+	}
 }
