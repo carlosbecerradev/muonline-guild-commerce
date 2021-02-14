@@ -8,6 +8,7 @@ import javax.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import com.cbh.muonlineguildcommerce.model.service.UserService;
 
 import lombok.AllArgsConstructor;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/user")
 @AllArgsConstructor

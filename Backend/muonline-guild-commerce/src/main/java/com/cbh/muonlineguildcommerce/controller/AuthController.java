@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,7 @@ import com.cbh.muonlineguildcommerce.security.service.AuthenticationService;
 
 import lombok.AllArgsConstructor;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
