@@ -42,6 +42,6 @@ public class User implements Serializable {
 	@Column(name = "created_date", nullable = false, updatable = false)
 	private Instant createdDate;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Authority> authorities;
 }
