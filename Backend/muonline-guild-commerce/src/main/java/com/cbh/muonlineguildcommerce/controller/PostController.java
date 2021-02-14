@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -52,22 +53,26 @@ public class PostController {
 		return new ResponseEntity<>(pageTemplateMapper.map(resultPage), HttpStatus.OK);
 	}
 
+	@RolesAllowed(value = { "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping("/{id}")
 	public ResponseEntity<PostResponse> finOneById(@PathVariable @Positive long id) {
 		return new ResponseEntity<>(postService.findOneById(id), HttpStatus.OK);
 	}
 
+	@RolesAllowed(value = { "ROLE_USER", "ROLE_ADMIN" })
 	@PostMapping
 	public ResponseEntity<PostResponse> save(@RequestBody @Valid PostRequest postRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(postService.save(postRequest));
 	}
 
+	@RolesAllowed(value = { "ROLE_USER", "ROLE_ADMIN" })
 	@PutMapping("/{id}")
 	public ResponseEntity<PostResponse> edit(@PathVariable @Positive long id,
 			@RequestBody @Valid PostRequest postRequest) {
 		return new ResponseEntity<>(postService.edit(postRequest, id), HttpStatus.OK);
 	}
 
+	@RolesAllowed(value = { "ROLE_USER", "ROLE_ADMIN" })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteOneById(@PathVariable @Positive long id) {
 		postService.deleteById(id);

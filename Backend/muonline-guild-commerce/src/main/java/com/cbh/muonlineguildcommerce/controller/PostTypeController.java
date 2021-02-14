@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -57,17 +58,20 @@ public class PostTypeController {
 		return new ResponseEntity<>(postTypeService.findOneById(id), HttpStatus.OK);
 	}
 
+	@RolesAllowed(value = { "ROLE_ADMIN" })
 	@PostMapping
 	public ResponseEntity<PostTypeResponse> save(@RequestBody @Valid PostTypeRequest postTypeRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(postTypeService.save(postTypeRequest));
 	}
 
+	@RolesAllowed(value = { "ROLE_ADMIN" })
 	@PutMapping("/{id}")
 	public ResponseEntity<PostTypeResponse> edit(@PathVariable @Positive long id,
 			@RequestBody @Valid PostTypeRequest postTypeRequest) {
 		return new ResponseEntity<>(postTypeService.edit(postTypeRequest, id), HttpStatus.OK);
 	}
 
+	@RolesAllowed(value = { "ROLE_ADMIN" })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteOneById(@PathVariable @Positive long id) {
 		postTypeService.deleteById(id);

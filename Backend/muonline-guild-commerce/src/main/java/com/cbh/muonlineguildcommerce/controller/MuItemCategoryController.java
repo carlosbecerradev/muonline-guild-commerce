@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -57,18 +58,21 @@ public class MuItemCategoryController {
 		return new ResponseEntity<>(muItemCategoryService.findOneById(id), HttpStatus.OK);
 	}
 
+	@RolesAllowed(value = { "ROLE_ADMIN" })
 	@PostMapping
 	public ResponseEntity<MuItemCategoryResponse> save(
 			@RequestBody @Valid MuItemCategoryRequest muItemCategoryRequest) {
 		return new ResponseEntity<>(muItemCategoryService.save(muItemCategoryRequest), HttpStatus.CREATED);
 	}
 
+	@RolesAllowed(value = { "ROLE_ADMIN" })
 	@PutMapping("/{id}")
 	public ResponseEntity<MuItemCategoryResponse> edit(@PathVariable @Positive long id,
 			@RequestBody @Valid MuItemCategoryRequest muItemCategoryRequest) {
 		return new ResponseEntity<>(muItemCategoryService.edit(muItemCategoryRequest, id), HttpStatus.OK);
 	}
 
+	@RolesAllowed(value = { "ROLE_ADMIN" })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteOneById(@PathVariable @Positive long id) {
 		muItemCategoryService.deleteById(id);
