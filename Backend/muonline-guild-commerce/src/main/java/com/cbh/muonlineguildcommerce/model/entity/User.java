@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -43,5 +45,8 @@ public class User implements Serializable {
 	private Instant createdDate;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "users_authorities", 
+    joinColumns = @JoinColumn(name = "user_id"), 
+    inverseJoinColumns = @JoinColumn(name = "authority_id"))
 	private List<Authority> authorities;
 }
