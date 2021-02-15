@@ -28,5 +28,5 @@ public class MuItemOption implements Serializable {
 	@Column(nullable = false)
 	private Boolean enabled;
 	@Column(name = "created_date", nullable = false, updatable = false)
-	private Instant createdDate;	
+	private Instant createdDate;
 }

@@ -3,7 +3,6 @@ package com.cbh.muonlineguildcommerce.model.entity;
 import java.io.Serializable;
 import java.time.Instant;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,8 +32,8 @@ public class MuItem implements Serializable {
 	private Boolean enabled;
 	@Column(name = "created_date", nullable = false, updatable = false)
 	private Instant createdDate;
-	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mu_item_category_id", nullable = false)
 	private MuItemCategory muItemCategory;
 }
