@@ -14,8 +14,6 @@ public class PostRequest {
 	@Positive
 	private Long muServerId;
 	@Positive
-	private Long userId;
-	@Positive
 	private Long muItemId;
 	@Positive
 	private Long muItemOptionId;

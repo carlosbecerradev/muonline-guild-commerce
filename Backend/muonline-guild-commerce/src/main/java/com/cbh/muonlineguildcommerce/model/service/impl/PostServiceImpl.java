@@ -12,6 +12,7 @@ import com.cbh.muonlineguildcommerce.mapper.PostMapper;
 import com.cbh.muonlineguildcommerce.model.entity.Post;
 import com.cbh.muonlineguildcommerce.model.repository.PostRepository;
 import com.cbh.muonlineguildcommerce.model.service.PostService;
+import com.cbh.muonlineguildcommerce.security.provider.AuthenticationFacade;
 
 import lombok.AllArgsConstructor;
 
@@ -21,6 +22,7 @@ public class PostServiceImpl implements PostService {
 
 	private final PostRepository postRepository;
 	private final PostMapper postMapper;
+	private final AuthenticationFacade authenticationFacade;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -40,6 +42,7 @@ public class PostServiceImpl implements PostService {
 	@Transactional
 	public PostResponse save(PostRequest postRequest) {
 		Post post = postMapper.mapToSave(postRequest);
+		post.setUser(authenticationFacade.getCurrentLoggedInUser());
 		return postMapper.mapEntityToDto(postRepository.saveAndFlush(post));
 	}
 
@@ -47,6 +50,9 @@ public class PostServiceImpl implements PostService {
 	@Transactional
 	public PostResponse edit(PostRequest postRequest, Long id) {
 		Post post = findPostById(id);
+		if (!isCurrentLoggedInUserPost(post)) {
+			return null;
+		}
 		post = postMapper.mapToEdit(postRequest, post);
 		return postMapper.mapEntityToDto(postRepository.save(post));
 	}
@@ -61,7 +67,19 @@ public class PostServiceImpl implements PostService {
 	@Override
 	@Transactional
 	public void deleteById(Long id) {
-		postRepository.deleteById(id);
+		Post post = findPostById(id);
+		if (isCurrentLoggedInUserPost(post)) {
+			postRepository.delete(post);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public boolean isCurrentLoggedInUserPost(Post post) {
+		if (post.getUser().equals(authenticationFacade.getCurrentLoggedInUser())) {
+			return true;
+		}
+		return false;
 	}
 
 }

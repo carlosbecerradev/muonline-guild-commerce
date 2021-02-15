@@ -18,4 +18,6 @@ public interface PostService {
 	public void deleteById(Long id);
 
 	public Post findPostById(Long id);
+
+	public boolean isCurrentLoggedInUserPost(Post post);
 }

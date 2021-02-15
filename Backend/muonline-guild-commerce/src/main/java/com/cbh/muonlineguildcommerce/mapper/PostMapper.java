@@ -16,12 +16,10 @@ import com.cbh.muonlineguildcommerce.model.entity.MuItemOption;
 import com.cbh.muonlineguildcommerce.model.entity.MuServer;
 import com.cbh.muonlineguildcommerce.model.entity.Post;
 import com.cbh.muonlineguildcommerce.model.entity.PostType;
-import com.cbh.muonlineguildcommerce.model.entity.User;
 import com.cbh.muonlineguildcommerce.model.service.MuItemOptionService;
 import com.cbh.muonlineguildcommerce.model.service.MuItemService;
 import com.cbh.muonlineguildcommerce.model.service.MuServerService;
 import com.cbh.muonlineguildcommerce.model.service.PostTypeService;
-import com.cbh.muonlineguildcommerce.model.service.UserService;
 
 import lombok.AllArgsConstructor;
 
@@ -29,7 +27,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PostMapper {
 
-	private final UserService userService;
 	private final MuItemService muItemService;
 	private final MuItemOptionService muItemOptionService;
 	private final MuServerService muServerService;
@@ -56,13 +53,12 @@ public class PostMapper {
 
 	public Post mapToSave(PostRequest postRequest) {
 		MuServer muServer = muServerService.findMuServerById(postRequest.getMuServerId());
-		User user = userService.findUserById(postRequest.getUserId());
 		MuItem muItem = muItemService.findMuItemById(postRequest.getMuItemId());
 		MuItemOption muItemOption = muItemOptionService.findMuItemOptionById(postRequest.getMuItemOptionId());
 		PostType postType = postTypeService.findPostTypeById(postRequest.getPostTypeId());
 
 		Post post = new Post(null, postRequest.getItemLevel(), postRequest.getObservation(), true, Instant.now(),
-				muServer, user, muItem, muItemOption, postType);
+				muServer, null, muItem, muItemOption, postType);
 		return post;
 	}
 
