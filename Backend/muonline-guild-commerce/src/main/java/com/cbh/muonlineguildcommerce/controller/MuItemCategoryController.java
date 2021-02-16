@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.cbh.muonlineguildcommerce.dto.request.MuItemCategoryRequest;
 import com.cbh.muonlineguildcommerce.dto.response.MuItemCategoryResponse;
@@ -37,6 +38,7 @@ import com.cbh.muonlineguildcommerce.model.service.MuItemCategoryService;
 import lombok.AllArgsConstructor;
 
 @CrossOrigin
+@RestControllerAdvice
 @RestController
 @RequestMapping("/api/mu-item-category")
 @AllArgsConstructor

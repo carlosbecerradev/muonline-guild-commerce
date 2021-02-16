@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.cbh.muonlineguildcommerce.dto.request.LoginRequest;
 import com.cbh.muonlineguildcommerce.dto.response.AuthenticationSuccessfulResponse;
@@ -27,6 +28,7 @@ import com.cbh.muonlineguildcommerce.security.service.AuthenticationService;
 import lombok.AllArgsConstructor;
 
 @CrossOrigin
+@RestControllerAdvice
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
@@ -35,9 +37,9 @@ public class AuthController {
 	private final AuthenticationService authenticationService;
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest) {
+	public ResponseEntity<AuthenticationSuccessfulResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
 		if (authenticationService.login(loginRequest) == null) {
-			return new ResponseEntity<Object>(null, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 		return new ResponseEntity<AuthenticationSuccessfulResponse>(authenticationService.login(loginRequest),
 				HttpStatus.OK);

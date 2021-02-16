@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.cbh.muonlineguildcommerce.dto.request.PostRequest;
 import com.cbh.muonlineguildcommerce.dto.response.PageTemplate;
@@ -37,6 +38,7 @@ import com.cbh.muonlineguildcommerce.model.service.PostService;
 import lombok.AllArgsConstructor;
 
 @CrossOrigin
+@RestControllerAdvice
 @RestController
 @RequestMapping("/api/post")
 @AllArgsConstructor

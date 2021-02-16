@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.cbh.muonlineguildcommerce.dto.request.MuServerRequest;
 import com.cbh.muonlineguildcommerce.dto.response.MuServerResponse;
@@ -38,6 +39,7 @@ import com.cbh.muonlineguildcommerce.model.service.MuServerService;
 import lombok.AllArgsConstructor;
 
 @CrossOrigin
+@RestControllerAdvice
 @RestController
 @RequestMapping("/api/mu-server")
 @AllArgsConstructor
