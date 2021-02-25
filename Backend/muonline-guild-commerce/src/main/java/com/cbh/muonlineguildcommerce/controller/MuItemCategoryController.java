@@ -48,7 +48,7 @@ public class MuItemCategoryController {
 	private final PageTemplateMapper<MuItemCategoryResponse> pageTemplateMapper;
 
 	@GetMapping
-	public ResponseEntity<PageTemplate<MuItemCategoryResponse>> finAll(
+	public ResponseEntity<PageTemplate<MuItemCategoryResponse>> findAll(
 			@RequestParam(required = false, defaultValue = "0") int page,
 			@RequestParam(required = false, defaultValue = "10") int size) {
 		Page<MuItemCategoryResponse> resultPage = muItemCategoryService.findAll(page, size);
@@ -56,7 +56,7 @@ public class MuItemCategoryController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<MuItemCategoryResponse> finOneById(@PathVariable @Positive long id) {
+	public ResponseEntity<MuItemCategoryResponse> findOneById(@PathVariable @Positive long id) {
 		return new ResponseEntity<>(muItemCategoryService.findOneById(id), HttpStatus.OK);
 	}
 

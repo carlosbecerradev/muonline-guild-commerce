@@ -48,7 +48,7 @@ public class MuItemOptionController {
 	private final PageTemplateMapper<MuItemOptionResponse> pageTemplateMapper;
 
 	@GetMapping
-	public ResponseEntity<PageTemplate<MuItemOptionResponse>> finAll(
+	public ResponseEntity<PageTemplate<MuItemOptionResponse>> findAll(
 			@RequestParam(required = false, defaultValue = "0") int page,
 			@RequestParam(required = false, defaultValue = "10") int size) {
 		Page<MuItemOptionResponse> resultPage = muItemOptionService.findAll(page, size);
@@ -56,7 +56,7 @@ public class MuItemOptionController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<MuItemOptionResponse> finOneById(@PathVariable @Positive long id) {
+	public ResponseEntity<MuItemOptionResponse> findOneById(@PathVariable @Positive long id) {
 		return new ResponseEntity<>(muItemOptionService.findOneById(id), HttpStatus.OK);
 	}
 

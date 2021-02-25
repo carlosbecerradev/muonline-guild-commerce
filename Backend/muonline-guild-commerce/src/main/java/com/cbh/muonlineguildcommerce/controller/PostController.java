@@ -48,7 +48,7 @@ public class PostController {
 	private final PageTemplateMapper<PostResponse> pageTemplateMapper;
 
 	@GetMapping
-	public ResponseEntity<PageTemplate<PostResponse>> finAll(
+	public ResponseEntity<PageTemplate<PostResponse>> findAll(
 			@RequestParam(required = false, defaultValue = "0") int page,
 			@RequestParam(required = false, defaultValue = "10") int size) {
 		Page<PostResponse> resultPage = postService.findAll(page, size);
@@ -57,7 +57,7 @@ public class PostController {
 
 	@RolesAllowed(value = { "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping("/{id}")
-	public ResponseEntity<PostResponse> finOneById(@PathVariable @Positive long id) {
+	public ResponseEntity<PostResponse> findOneById(@PathVariable @Positive long id) {
 		return new ResponseEntity<>(postService.findOneById(id), HttpStatus.OK);
 	}
 

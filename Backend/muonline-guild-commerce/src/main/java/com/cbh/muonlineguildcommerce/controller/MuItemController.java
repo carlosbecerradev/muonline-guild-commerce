@@ -40,7 +40,7 @@ import lombok.AllArgsConstructor;
 @CrossOrigin
 @RestControllerAdvice
 @RestController
-@RequestMapping("/api/mu-item")
+@RequestMapping("/api/mu-items")
 @AllArgsConstructor
 public class MuItemController {
 
@@ -48,7 +48,7 @@ public class MuItemController {
 	private final PageTemplateMapper<MuItemResponse> pageTemplateMapper;
 
 	@GetMapping
-	public ResponseEntity<PageTemplate<MuItemResponse>> finAll(
+	public ResponseEntity<PageTemplate<MuItemResponse>> findAll(
 			@RequestParam(required = false, defaultValue = "0") int page,
 			@RequestParam(required = false, defaultValue = "10") int size) {
 		Page<MuItemResponse> resultPage = muItemService.findAll(page, size);
@@ -56,7 +56,7 @@ public class MuItemController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<MuItemResponse> finOneById(@PathVariable @Positive long id) {
+	public ResponseEntity<MuItemResponse> findOneById(@PathVariable @Positive long id) {
 		return new ResponseEntity<>(muItemService.findOneById(id), HttpStatus.OK);
 	}
 

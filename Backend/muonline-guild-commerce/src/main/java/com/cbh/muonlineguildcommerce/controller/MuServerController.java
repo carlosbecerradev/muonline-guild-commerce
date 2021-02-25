@@ -49,7 +49,7 @@ public class MuServerController {
 	private final PageTemplateMapper<MuServerResponse> pageTemplateMapper;
 
 	@GetMapping
-	public ResponseEntity<PageTemplate<MuServerResponse>> finAll(
+	public ResponseEntity<PageTemplate<MuServerResponse>> findAll(
 			@RequestParam(required = false, defaultValue = "0") int page,
 			@RequestParam(required = false, defaultValue = "10") int size) {
 		Page<MuServerResponse> resultPage = muServerService.findAll(page, size);
@@ -57,7 +57,7 @@ public class MuServerController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<MuServerResponse> finOneById(@PathVariable @Positive long id) {
+	public ResponseEntity<MuServerResponse> findOneById(@PathVariable @Positive long id) {
 		return new ResponseEntity<>(muServerService.findOneById(id), HttpStatus.OK);
 	}
 

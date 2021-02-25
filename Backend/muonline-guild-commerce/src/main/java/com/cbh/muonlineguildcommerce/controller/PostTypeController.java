@@ -48,7 +48,7 @@ public class PostTypeController {
 	private final PageTemplateMapper<PostTypeResponse> pageTemplateMapper;
 
 	@GetMapping
-	public ResponseEntity<PageTemplate<PostTypeResponse>> finAll(
+	public ResponseEntity<PageTemplate<PostTypeResponse>> findAll(
 			@RequestParam(required = false, defaultValue = "0") int page,
 			@RequestParam(required = false, defaultValue = "10") int size) {
 		Page<PostTypeResponse> resultPage = postTypeService.findAll(page, size);
@@ -56,7 +56,7 @@ public class PostTypeController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<PostTypeResponse> finOneById(@PathVariable @Positive long id) {
+	public ResponseEntity<PostTypeResponse> findOneById(@PathVariable @Positive long id) {
 		return new ResponseEntity<>(postTypeService.findOneById(id), HttpStatus.OK);
 	}
 

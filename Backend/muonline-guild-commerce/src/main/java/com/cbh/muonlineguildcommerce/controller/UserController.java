@@ -38,7 +38,7 @@ public class UserController {
 	private final PageTemplateMapper<UserResponse> pageTemplateMapper;
 
 	@GetMapping
-	public ResponseEntity<PageTemplate<UserResponse>> finAll(
+	public ResponseEntity<PageTemplate<UserResponse>> findAll(
 			@RequestParam(required = false, defaultValue = "0") int page,
 			@RequestParam(required = false, defaultValue = "10") int size) {
 		Page<UserResponse> resultPage = userService.findAll(page, size);
@@ -46,7 +46,7 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<UserResponse> finOneById(@PathVariable @Positive long id) {
+	public ResponseEntity<UserResponse> findOneById(@PathVariable @Positive long id) {
 		return new ResponseEntity<>(userService.findOneById(id), HttpStatus.OK);
 	}
 
