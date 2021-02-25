@@ -41,7 +41,7 @@ import lombok.AllArgsConstructor;
 @CrossOrigin
 @RestControllerAdvice
 @RestController
-@RequestMapping("/api/mu-server")
+@RequestMapping("/api/mu-servers")
 @AllArgsConstructor
 public class MuServerController {
 

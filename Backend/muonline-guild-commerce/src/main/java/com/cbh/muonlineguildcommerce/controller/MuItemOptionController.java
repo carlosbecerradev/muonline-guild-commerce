@@ -40,7 +40,7 @@ import lombok.AllArgsConstructor;
 @CrossOrigin
 @RestControllerAdvice
 @RestController
-@RequestMapping("/api/mu-item-option")
+@RequestMapping("/api/mu-item-options")
 @AllArgsConstructor
 public class MuItemOptionController {
 

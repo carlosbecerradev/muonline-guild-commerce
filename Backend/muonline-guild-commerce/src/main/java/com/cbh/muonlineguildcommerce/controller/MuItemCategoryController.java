@@ -40,7 +40,7 @@ import lombok.AllArgsConstructor;
 @CrossOrigin
 @RestControllerAdvice
 @RestController
-@RequestMapping("/api/mu-item-category")
+@RequestMapping("/api/mu-item-categories")
 @AllArgsConstructor
 public class MuItemCategoryController {
 

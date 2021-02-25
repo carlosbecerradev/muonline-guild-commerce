@@ -40,7 +40,7 @@ import lombok.AllArgsConstructor;
 @CrossOrigin
 @RestControllerAdvice
 @RestController
-@RequestMapping("/api/post-type")
+@RequestMapping("/api/post-types")
 @AllArgsConstructor
 public class PostTypeController {
 
