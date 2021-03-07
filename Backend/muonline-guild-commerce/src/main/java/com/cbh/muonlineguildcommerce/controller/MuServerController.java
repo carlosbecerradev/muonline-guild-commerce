@@ -51,8 +51,16 @@ public class MuServerController {
 	@GetMapping
 	public ResponseEntity<PageTemplate<MuServerResponse>> findAll(
 			@RequestParam(required = false, defaultValue = "0") int page,
-			@RequestParam(required = false, defaultValue = "10") int size) {
-		Page<MuServerResponse> resultPage = muServerService.findAll(page, size);
+			@RequestParam(required = false, defaultValue = "10") int size,
+			@RequestParam(required = false) Boolean enabled) {		
+		Page<MuServerResponse> resultPage = null;
+		
+		if(enabled == null) {
+			resultPage = muServerService.findAll(page, size);
+		} else {
+			resultPage = muServerService.findByEnabled(enabled, page, size);
+		}
+		
 		return new ResponseEntity<>(pageTemplateMapper.map(resultPage), HttpStatus.OK);
 	}
 
@@ -79,6 +87,11 @@ public class MuServerController {
 	public ResponseEntity<?> deleteOneById(@PathVariable @Positive long id) {
 		muServerService.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/list")
+	public ResponseEntity<List<MuServerResponse>> findAll() {
+		return new ResponseEntity<>(muServerService.findAll(), HttpStatus.OK);
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -1,5 +1,8 @@
 package com.cbh.muonlineguildcommerce.model.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -39,6 +42,12 @@ public class UserServiceImpl implements UserService {
 	public User findUserById(Long id) {
 		return userRepository.findById(id)
 				.orElseThrow(() -> new UserNotFound("User with ID - " + id + " is not found."));
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<UserResponse> findAll() {
+		return userRepository.findByEnabledTrue().stream().map(userMapper::mapEntityToDto).collect(Collectors.toList());
 	}
 
 }

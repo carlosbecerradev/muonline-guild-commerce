@@ -1,5 +1,7 @@
 package com.cbh.muonlineguildcommerce.model.service.impl;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -62,6 +64,13 @@ public class MuItemServiceImpl implements MuItemService {
 	@Transactional
 	public void deleteById(Long id) {
 		muItemRepository.deleteById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<MuItemResponse> findByNameLike(String name) {
+		return muItemRepository.findByNameLikeAndEnabledTrue(name, PageRequest.of(0, 10))
+				.map(muItemMapper::mapEntityToDto).getContent();
 	}
 
 }

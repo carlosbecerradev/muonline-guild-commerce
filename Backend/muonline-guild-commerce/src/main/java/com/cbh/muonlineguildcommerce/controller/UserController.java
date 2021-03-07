@@ -50,6 +50,11 @@ public class UserController {
 		return new ResponseEntity<>(userService.findOneById(id), HttpStatus.OK);
 	}
 
+	@GetMapping("/list")
+	public ResponseEntity<List<UserResponse>> findAll() {
+		return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+	}
+
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(UserNotFound.class)
 	public List<ApiError> handleNotFoundExceptions(UserNotFound ex) {

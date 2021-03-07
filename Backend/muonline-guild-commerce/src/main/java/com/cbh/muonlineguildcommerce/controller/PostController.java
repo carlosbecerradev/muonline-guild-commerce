@@ -81,6 +81,42 @@ public class PostController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@GetMapping("/with-mu-server-id/{muServerId}")
+	public ResponseEntity<PageTemplate<PostResponse>> findPostsPageByMuServerId(
+			@RequestParam(required = false, defaultValue = "0") int page,
+			@RequestParam(required = false, defaultValue = "10") int size,
+			@RequestParam(required = false, defaultValue = "true") boolean enabled,
+			@PathVariable Long muServerId,
+			@RequestParam(required = false, defaultValue = "") String muItemName,
+			@RequestParam(required = false, defaultValue = "") String muItemCategoryName,
+			@RequestParam(required = false, defaultValue = "") String postTypeName,
+			@RequestParam(required = false, defaultValue = "") String userNickname) {
+
+		Page<PostResponse> resultPage = null;
+
+		if (!muItemName.equalsIgnoreCase("")) {
+			resultPage = postService.findByEnabledAndMuServerIdAndMuItemName(enabled, muServerId, muItemName, page,
+					size);
+		}
+		if (!muItemCategoryName.equalsIgnoreCase("")) {
+			resultPage = postService.findByEnabledAndMuServerIdAndMuItemCategoryName(enabled, muServerId,
+					muItemCategoryName, page, size);
+		}
+		if (!postTypeName.equalsIgnoreCase("")) {
+			resultPage = postService.findByEnabledAndMuServerIdAndPostTypeName(enabled, muServerId, postTypeName, page,
+					size);
+		}
+		if (!userNickname.equalsIgnoreCase("")) {
+			resultPage = postService.findByEnabledAndMuServerIdAndUserNickname(enabled, muServerId, userNickname, page,
+					size);
+		}
+		if (resultPage == null) {
+			resultPage = postService.findByEnabledAndMuServerId(enabled, muServerId, page, size);
+		}
+
+		return new ResponseEntity<>(pageTemplateMapper.map(resultPage), HttpStatus.OK);
+	}
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public List<ApiError> handleValidationExceptions(MethodArgumentNotValidException ex) {

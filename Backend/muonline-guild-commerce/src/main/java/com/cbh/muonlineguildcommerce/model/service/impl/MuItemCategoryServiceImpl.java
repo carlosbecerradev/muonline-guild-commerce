@@ -1,5 +1,8 @@
 package com.cbh.muonlineguildcommerce.model.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -64,5 +67,12 @@ public class MuItemCategoryServiceImpl implements MuItemCategoryService {
 	@Transactional
 	public void deleteById(Long id) {
 		muItemCategoryRepository.deleteById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<MuItemCategoryResponse> findAll() {
+		return muItemCategoryRepository.findByEnabledTrue().stream().map(muItemCategoryMapper::mapEntityToDto)
+				.collect(Collectors.toList());
 	}
 }

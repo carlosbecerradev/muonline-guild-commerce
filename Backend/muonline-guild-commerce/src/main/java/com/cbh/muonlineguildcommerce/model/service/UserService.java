@@ -1,5 +1,7 @@
 package com.cbh.muonlineguildcommerce.model.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import com.cbh.muonlineguildcommerce.dto.response.UserResponse;
@@ -11,4 +13,6 @@ public interface UserService {
 	public UserResponse findOneById(Long id);
 
 	public User findUserById(Long id);
+
+	public List<UserResponse> findAll();
 }

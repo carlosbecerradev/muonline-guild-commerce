@@ -81,6 +81,11 @@ public class MuItemCategoryController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@GetMapping("/list")
+	public ResponseEntity<List<MuItemCategoryResponse>> findAll() {
+		return new ResponseEntity<>(muItemCategoryService.findAll(), HttpStatus.OK);
+	}
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public List<ApiError> handleValidationExceptions(MethodArgumentNotValidException ex) {

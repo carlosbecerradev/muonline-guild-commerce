@@ -1,5 +1,6 @@
 package com.cbh.muonlineguildcommerce.model.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,6 @@ import com.cbh.muonlineguildcommerce.model.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<User> findByEmail(String email);
+
+	List<User> findByEnabledTrue();
 }

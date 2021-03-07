@@ -1,5 +1,7 @@
 package com.cbh.muonlineguildcommerce.model.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import com.cbh.muonlineguildcommerce.dto.request.MuServerRequest;
@@ -18,4 +20,8 @@ public interface MuServerService {
 	public void deleteById(Long id);
 
 	public MuServer findMuServerById(Long id);
+
+	public Page<MuServerResponse> findByEnabled(Boolean enabled, int page, int size);
+
+	public List<MuServerResponse> findAll();
 }

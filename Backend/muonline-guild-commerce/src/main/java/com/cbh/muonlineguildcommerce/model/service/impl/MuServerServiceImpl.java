@@ -1,5 +1,8 @@
 package com.cbh.muonlineguildcommerce.model.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -61,6 +64,20 @@ public class MuServerServiceImpl implements MuServerService {
 	@Transactional
 	public void deleteById(Long id) {
 		muServerRepository.deleteById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<MuServerResponse> findByEnabled(Boolean enabled, int page, int size) {
+		Page<MuServer> entities = muServerRepository.findByEnabled(enabled, PageRequest.of(page, size));
+		return entities.map(muServerMapper::mapEntityToDto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<MuServerResponse> findAll() {
+		return muServerRepository.findByEnabledTrue().stream().map(muServerMapper::mapEntityToDto)
+				.collect(Collectors.toList());
 	}
 
 }

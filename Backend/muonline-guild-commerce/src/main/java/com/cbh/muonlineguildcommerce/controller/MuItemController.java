@@ -80,6 +80,11 @@ public class MuItemController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@GetMapping("/contain")
+	public ResponseEntity<List<MuItemResponse>> findAllContainName(@RequestParam(required = true) String name) {
+		return new ResponseEntity<>(muItemService.findByNameLike(name), HttpStatus.OK);
+	}
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public List<ApiError> handleValidationExceptions(MethodArgumentNotValidException ex) {

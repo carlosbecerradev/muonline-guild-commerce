@@ -1,5 +1,7 @@
 package com.cbh.muonlineguildcommerce.model.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import com.cbh.muonlineguildcommerce.dto.request.MuItemRequest;
@@ -18,4 +20,6 @@ public interface MuItemService {
 	public void deleteById(Long id);
 
 	public MuItem findMuItemById(Long id);
+
+	public List<MuItemResponse> findByNameLike(String name);
 }

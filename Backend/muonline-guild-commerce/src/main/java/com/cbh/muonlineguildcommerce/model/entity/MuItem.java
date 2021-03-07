@@ -5,7 +5,6 @@ import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +32,7 @@ public class MuItem implements Serializable {
 	@Column(name = "created_date", nullable = false, updatable = false)
 	private Instant createdDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "mu_item_category_id", nullable = false)
 	private MuItemCategory muItemCategory;
 }

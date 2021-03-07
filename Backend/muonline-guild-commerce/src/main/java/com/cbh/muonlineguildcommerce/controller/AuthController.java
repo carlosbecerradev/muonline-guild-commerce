@@ -2,6 +2,7 @@ package com.cbh.muonlineguildcommerce.controller;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolationException;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +44,12 @@ public class AuthController {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 		return new ResponseEntity<AuthenticationSuccessfulResponse>(authenticationService.login(loginRequest),
+				HttpStatus.OK);
+	}
+
+	@GetMapping("/check-access-token")
+	public ResponseEntity<Map<String, Object>> checkAccessToken() {
+		return new ResponseEntity<Map<String, Object>>(authenticationService.checkAccessToken(),
 				HttpStatus.OK);
 	}
 

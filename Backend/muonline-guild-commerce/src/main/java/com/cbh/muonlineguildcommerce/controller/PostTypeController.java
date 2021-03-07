@@ -80,6 +80,11 @@ public class PostTypeController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@GetMapping("/list")
+	public ResponseEntity<List<PostTypeResponse>> findAll() {
+		return new ResponseEntity<>(postTypeService.findAll(), HttpStatus.OK);
+	}
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public List<ApiError> handleValidationExceptions(MethodArgumentNotValidException ex) {

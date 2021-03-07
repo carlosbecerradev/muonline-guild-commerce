@@ -1,5 +1,8 @@
 package com.cbh.muonlineguildcommerce.model.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -62,6 +65,13 @@ public class PostTypeServiceImpl implements PostTypeService {
 	@Transactional
 	public void deleteById(Long id) {
 		postTypeRepository.deleteById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<PostTypeResponse> findAll() {
+		return postTypeRepository.findByEnabledTrue().stream().map(postTypeMapper::mapEntityToDto)
+				.collect(Collectors.toList());
 	}
 
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthenticationSuccessfulResponse {
 	private String accessToken;
+	private String nickname;
 	private Long createdAt;
 	private Long expiresIn;
 	private String tokenType;

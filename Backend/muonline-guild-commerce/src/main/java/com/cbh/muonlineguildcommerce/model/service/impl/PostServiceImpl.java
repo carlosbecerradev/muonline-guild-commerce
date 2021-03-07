@@ -82,4 +82,47 @@ public class PostServiceImpl implements PostService {
 		return false;
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public Page<PostResponse> findByEnabledAndMuServerId(boolean enabled, Long muServerId, int page, int size) {
+		Page<Post> result = postRepository.findByEnabledAndMuServerId(enabled, muServerId, PageRequest.of(page, size));
+		return result.map(postMapper::mapEntityToDto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<PostResponse> findByEnabledAndMuServerIdAndMuItemName(boolean enabled, Long muServerId,
+			String muItemName, int page, int size) {
+		Page<Post> result = postRepository.findByEnabledAndMuServerIdAndMuItemName(enabled, muServerId, muItemName,
+				PageRequest.of(page, size));
+		return result.map(postMapper::mapEntityToDto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<PostResponse> findByEnabledAndMuServerIdAndMuItemCategoryName(boolean enabled, Long muServerId,
+			String muItemCategoryName, int page, int size) {
+		Page<Post> result = postRepository.findByEnabledAndMuServerIdAndMuItemMuItemCategoryName(enabled, muServerId,
+				muItemCategoryName, PageRequest.of(page, size));
+		return result.map(postMapper::mapEntityToDto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<PostResponse> findByEnabledAndMuServerIdAndPostTypeName(boolean enabled, Long muServerId,
+			String postTypeName, int page, int size) {
+		Page<Post> result = postRepository.findByEnabledAndMuServerIdAndPostTypeName(enabled, muServerId,
+				postTypeName, PageRequest.of(page, size));
+		return result.map(postMapper::mapEntityToDto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<PostResponse> findByEnabledAndMuServerIdAndUserNickname(boolean enabled, Long muServerId,
+			String userNickname, int page, int size) {
+		Page<Post> result = postRepository.findByEnabledAndMuServerIdAndUserNickname(enabled, muServerId,
+				userNickname, PageRequest.of(page, size));
+		return result.map(postMapper::mapEntityToDto);
+	}
+
 }
