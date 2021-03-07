@@ -5,6 +5,7 @@ import HomePage from '@/views/HomePage.vue'
 import CreatePostPage from '@/views/CreatePostPage.vue'
 import MuServersPage from '@/views/MuServersPage.vue'
 import MuServerPostsPage from '@/views/MuServerPostsPage.vue'
+import SignIn from '@/views/SignIn.vue'
 
 import UserPostsPage from '@/views/user/UserPostsPage.vue'
 import ProfilePage from '@/views/user/ProfilePage.vue'
@@ -16,6 +17,11 @@ const routes = [
     path: '/',
     name: 'HomePage',
     component: HomePage,
+  },
+  {
+    path: '/sign-in',
+    name: 'SignIn',
+    component: SignIn,
   },
   {
     path: '/mu-servers',

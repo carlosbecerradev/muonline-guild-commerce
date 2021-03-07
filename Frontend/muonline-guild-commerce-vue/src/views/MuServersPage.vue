@@ -14,15 +14,19 @@
       </div>
     </section>
 
-    <section v-if="true" class="divide-y bg-white">
-      <div v-for="i in 3" :key="i" class="max-w-7xl mx-auto px-4 md:px-8 py-6">
+    <section v-if="muServers != null" class="divide-y bg-white">
+      <div
+        v-for="(muServer, index) in muServers.data"
+        :key="index"
+        class="max-w-7xl mx-auto px-4 md:px-8 py-6"
+      >
         <!-- This example requires Tailwind CSS v2.0+ -->
         <div class="md:flex md:items-center md:justify-between text-md">
           <div class="flex-1">
             <h2
               class="text-2xl font-bold sm:text-3xl sm:truncate text-gray-900"
             >
-              MU PVP
+              {{ muServer.name }}
             </h2>
             <div
               class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6"
@@ -43,7 +47,7 @@
                     d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span>Season 6</span>
+                <span>{{ muServer.season }}</span>
               </div>
               <div class="mt-2 flex items-center text-gray-600">
                 <!-- Heroicon name: location-marker -->
@@ -59,7 +63,7 @@
                     clip-rule="evenodd"
                   />
                 </svg>
-                <a href="" target="_blank">website</a>
+                <a :href="muServer.name" target="_blank">{{ muServer.name }}</a>
               </div>
               <div class="mt-2 flex items-center text-gray-600">
                 <!-- Heroicon name: calendar -->
@@ -77,12 +81,12 @@
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                   />
                 </svg>
-                hace 1 año
+                {{ muServer.createdDate }}
               </div>
             </div>
           </div>
           <div class="mt-5 flex md:mt-0 md:ml-4 space-x-4">
-            <router-link :to="{ path: `/post/new?mu-server=1` }">
+            <router-link :to="{ path: `/post/new?muServerId=${muServer.id}` }">
               <div
                 class="flex items-center px-4 py-2 rounded-md shadow-sm font-medium text-gray-900 bg-yellow-300 hover:bg-yellow-400"
               >
@@ -101,7 +105,7 @@
                 <span>Add Post</span>
               </div>
             </router-link>
-            <router-link :to="{ path: `/mu-server/1/posts` }">
+            <router-link :to="{ path: `/mu-server/${muServer.id}/posts` }">
               <div
                 class="flex items-center px-4 py-2 rounded-md shadow-sm font-medium text-gray-900 bg-yellow-300 hover:bg-yellow-400"
               >
@@ -124,16 +128,67 @@
           </div>
         </div>
       </div>
+
+      <paginator
+        :page="muServers.description.number"
+        :totalPages="muServers.description.totalPages"
+        @pageNumber="updatePage"
+      />
     </section>
   </default-layout>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
+import Paginator from "@/components/pagination/Paginator.vue";
 
 export default {
+  data() {
+    return {
+      muServers: null,
+      muServerUrl: "",
+      currentPage: 0,
+      pageSize: 10,
+    };
+  },
   components: {
     DefaultLayout,
+    Paginator,
+  },
+  computed: {
+    ...mapGetters(["accessToken"]),
+  },
+  mounted() {
+    this.init();
+  },
+  methods: {
+    updatePage(pageNumber) {
+      this.currentPage = pageNumber;
+      this.fetchMuServersPage(
+        `${this.muServerUrl}&page=${this.currentPage}&size=${this.pageSize}`
+      );
+    },
+    async fetchMuServersPage(url) {
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            Authorization: this.accessToken,
+          },
+        });
+
+        this.muServers = response.status == 200 ? await response.json() : null;
+        // console.log(this.muServers);
+        // console.log(response);
+      } catch (error) {
+        console.error("MuServersPage:fetchMuServersPage:", error);
+      }
+    },
+    init() {
+      this.muServerUrl = `http://localhost:8088/api/mu-servers?enabled=true`;
+      this.updatePage(0);
+    },
   },
 };
 </script>

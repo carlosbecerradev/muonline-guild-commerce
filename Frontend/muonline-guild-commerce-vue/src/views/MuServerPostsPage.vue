@@ -8,7 +8,7 @@
           <div class="flex-1">
             <h2 class="font-extrabold text-yellow-300 text-4xl">Posts</h2>
             <h3 class="text-2xl font-bold text-white sm:text-3xl sm:truncate">
-              Mu Titanium Online
+              {{ muServer.name }}
             </h3>
             <div class="mt-1 flex flex-wrap sm:flex-row">
               <div class="mt-2 mr-6 flex items-center text-gray-200">
@@ -29,7 +29,7 @@
                     d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"
                   />
                 </svg>
-                Season 99b
+                {{ muServer.season }}
               </div>
               <div class="mt-2 mr-6 flex items-center text-gray-200">
                 <!-- Heroicon name: location-marker -->
@@ -45,7 +45,12 @@
                     clip-rule="evenodd"
                   />
                 </svg>
-                <a href="" target="_blank" class="hover:text-white">Website</a>
+                <a
+                  :href="muServer.website"
+                  target="_blank"
+                  class="hover:text-white"
+                  >{{ muServer.website }}</a
+                >
               </div>
               <div class="mt-2 mr-6 flex items-center text-gray-200">
                 <!-- Heroicon name: calendar -->
@@ -62,12 +67,12 @@
                     clip-rule="evenodd"
                   />
                 </svg>
-                Hace 10seg
+                {{ muServer.createdDate }}
               </div>
             </div>
           </div>
           <div v-if="true" class="mt-5 sm:mt-0 flex items-center space-x-4">
-            <router-link :to="{ path: `/post/new?mu-server=1` }">
+            <router-link :to="{ path: `/post/new?muServerId=${muServer.id}` }">
               <div
                 class="flex items-center px-4 py-2 rounded-md shadow-sm font-medium text-gray-900 bg-yellow-300 hover:bg-yellow-400"
               >
@@ -94,18 +99,23 @@
     <!-- Posts Filters -->
     <section class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-6">
       <posts-filters
+        @showAllPost="resetFilters"
         @muItemNameSelected="filterDataByItemName"
-        @filterSelected="filterDataBy"
+        @muItemCategoryNameSelected="filterDataByMuItemCategory"
+        @postTypeNameSelected="filterDataByPostType"
+        @userNicknameSelected="filterDataByUser"
       ></posts-filters>
     </section>
     <!-- Posts table -->
-    <section class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 pb-8 lg:pb-12">
-      <posts :data="data"></posts>
+    <section
+      v-if="posts != null"
+      class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 pb-8 lg:pb-12"
+    >
+      <posts :data="posts.data"></posts>
       <!-- Posts pagination -->
       <paginator
-        v-if="data != []"
-        :page="4"
-        :totalPages="12"
+        :page="posts.description.number"
+        :totalPages="posts.description.totalPages"
         @pageNumber="updatePage"
       ></paginator>
     </section>
@@ -113,6 +123,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import PostsFilters from "@/components/PostsFilters.vue";
 import Posts from "@/components/Posts.vue";
@@ -121,29 +132,101 @@ import Paginator from "@/components/pagination/Paginator.vue";
 export default {
   data() {
     return {
-      data: [],
+      posts: null,
       currentPage: 0,
+      pageSize: 6,
+      postsUrl: "",
+      muServerId: 0,
+      muServer: {
+        id: 0,
+        name: "",
+        season: "",
+        website: "",
+        createdDate: null,
+      },
     };
+  },
+  computed: {
+    ...mapGetters(["accessToken"]),
   },
   mounted() {
     this.init();
   },
   methods: {
+    async fetchMuServerById() {
+      try {
+        const response = await fetch(
+          `http://localhost:8088/api/mu-servers/${this.muServerId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: this.accessToken,
+            },
+          }
+        );
+
+        this.muServer = response.status == 200 ? await response.json() : null;
+
+        console.log(response);
+      } catch (error) {
+        console.error("MuServerPostsPage:fetchMuServerById:", error);
+      }
+    },
     updatePage(pageNumber) {
       this.currentPage = pageNumber;
-      console.log("pageNumber", pageNumber);
-      console.log("currentPage", this.currentPage);
+      this.fetchMuServerPostsPage(
+        `${this.postsUrl}&page=${this.currentPage}&size=${this.pageSize}`
+      );
+      // console.log("pageNumber", pageNumber);
+      // console.log("currentPage", this.currentPage);
     },
-    filterDataByItemName(muItemNameSelected) {
-      console.log("currentPage", this.currentPage);
-      console.log("muItemNameSelected", muItemNameSelected);
+    resetFilters() {
+      this.currentPage = 0;
+      this.postsUrl = `http://localhost:8088/api/posts/with-mu-server-id/${this.muServerId}?enabled=true`;
+      this.updatePage(0);
     },
-    filterDataBy(filterSelected) {
-      console.log("currentPage", this.currentPage);
-      console.log("filterSelected", filterSelected);
+    filterDataByItemName(name) {
+      this.currentPage = 0;
+      this.postsUrl = `http://localhost:8088/api/posts/with-mu-server-id/${this.muServerId}?muItemName=${name}&enabled=true`;
+      this.updatePage(0);
+    },
+    filterDataByMuItemCategory(name) {
+      this.currentPage = 0;
+      this.postsUrl = `http://localhost:8088/api/posts/with-mu-server-id/${this.muServerId}?muItemCategoryName=${name}&enabled=true`;
+      this.updatePage(0);
+    },
+    filterDataByPostType(name) {
+      this.currentPage = 0;
+      this.postsUrl = `http://localhost:8088/api/posts/with-mu-server-id/${this.muServerId}?postTypeName=${name}&enabled=true`;
+      this.updatePage(0);
+    },
+    filterDataByUser(nickname) {
+      this.currentPage = 0;
+      this.postsUrl = `http://localhost:8088/api/posts/with-mu-server-id/${this.muServerId}?userNickname=${nickname}&enabled=true`;
+      this.updatePage(0);
+    },
+    async fetchMuServerPostsPage(url) {
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            Authorization: this.accessToken,
+          },
+        });
+
+        this.posts = response.status == 200 ? await response.json() : null;
+
+        console.log(response);
+        console.info("Posts: ", this.posts);
+      } catch (error) {
+        console.error("MuServerPostsPage:fetchMuServerPostsPage:", error);
+      }
     },
     init() {
-      this.currentPage = 0;
+      this.muServerId = this.$route.params.id;
+      this.fetchMuServerById();
+      this.postsUrl = `http://localhost:8088/api/posts/with-mu-server-id/${this.muServerId}?enabled=true`;
+      this.updatePage(0);
     },
   },
   components: {

@@ -14,7 +14,10 @@
           class="relative col-span-6 sm:col-span-3 hover:bg-gray-200 cursor-pointer"
         >
           <!-- Show all posts-->
-          <div class="py-4 flex justify-around items-center">
+          <div
+            @click="emitAllPostsOption"
+            class="py-4 flex justify-around items-center"
+          >
             <span>All Posts</span>
             <svg
               class="h-4 w-5"
@@ -34,7 +37,7 @@
         </div>
         <!-- Show other filters-->
         <div
-          class="relative row-start-2 row-end-3 col-start-1 col-end-7 sm:row-span-1 sm:col-span-3 hover:bg-gray-200 cursor-pointer"
+          class="relative col-span-6 sm:col-span-3 hover:bg-gray-200 cursor-pointer"
         >
           <div
             @click="dropdowns.filters.show = !dropdowns.filters.show"
@@ -50,45 +53,6 @@
             </svg>
           </div>
         </div>
-        <!-- Sort posts
-        <div
-          class="col-span-6 sm:col-start-10 hover:bg-gray-200 cursor-pointer"
-        >
-          <div
-            @click="dropdowns.sortBy.show = !dropdowns.sortBy.show"
-            class="relative py-4 flex justify-around items-center z-10"
-          >
-            <span>Sort By</span>
-            <svg
-              class="h-4 w-5"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-
-            <div
-              v-if="dropdowns.sortBy.show"
-              class="absolute top-full right-0 bg-gray-200 min-w-full max-h-40 w-auto overflow-auto"
-            >
-              <div
-                v-for="(item, index) in dropdowns.sortBy.items"
-                :key="index"
-                class="text-gray-900 px-6 py-2 hover:bg-gray-300 whitespace-nowrap"
-              >
-                {{ item }}
-              </div>
-            </div>
-          </div>
-        </div>
-        -->
       </div>
 
       <!-- Filters-->
@@ -127,7 +91,7 @@
                 class="absolute top-full left-0 bg-gray-200 max-h-40 min-w-full w-auto overflow-auto z-20"
               >
                 <div
-                  @click="emitFilterSelected('item-category', item)"
+                  @click="emitMuItemCategoryFilterSelected(item.name)"
                   v-for="item in dropdowns.itemCategoryFilter.items"
                   :key="item.id"
                   class="text-gray-900 px-6 py-2 hover:bg-gray-300 whitespace-nowrap"
@@ -167,7 +131,7 @@
                 class="absolute top-full left-0 bg-gray-200 max-h-40 min-w-full w-auto overflow-auto z-20"
               >
                 <div
-                  @click="emitFilterSelected('post-type', item)"
+                  @click="emitPostTypeFilterSelected(item.name)"
                   v-for="item in dropdowns.postTypeFilter.items"
                   :key="item.id"
                   class="text-gray-900 px-6 py-2 hover:bg-gray-300 whitespace-nowrap"
@@ -207,7 +171,7 @@
                 class="absolute top-full left-0 bg-gray-200 max-h-40 min-w-full w-auto overflow-auto z-20"
               >
                 <div
-                  @click="emitFilterSelected('user', item)"
+                  @click="emitUserFilterSelected(item.nickname)"
                   v-for="item in dropdowns.userFilter.items"
                   :key="item.id"
                   class="text-gray-900 px-6 py-2 hover:bg-gray-300 whitespace-nowrap"
@@ -224,6 +188,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Search from "@/components/filter/Search.vue";
 
 export default {
@@ -231,10 +196,6 @@ export default {
     return {
       searchItems: [],
       dropdowns: {
-        sortBy: {
-          show: false,
-          items: ["Created Date"],
-        },
         filters: {
           show: false,
           items: ["Created Date"],
@@ -257,40 +218,113 @@ export default {
   mounted() {
     this.init();
   },
+  computed: {
+    ...mapGetters(["accessToken"]),
+  },
   methods: {
-    fetchMuItemsByName(name) {
-      console.log("searchInputText", name);
-      if (name != "") {
-        this.searchItems = ["A", "B", "C", "D", "E", "F"];
-      }
+    emitAllPostsOption() {
+      this.$emit("showAllPost");
+      console.log("emitAllPostsOption", "Show All Posts");
+      this.resetDropdownsShows();
     },
     emitMuItemNameSelected(name) {
       this.$emit("muItemNameSelected", name);
-      console.log("searchItemSelected", name);
-    },
-    emitFilterSelected(filter, id) {
-      this.$emit("filterSelected", { filter, id });
+      console.log("emitMuItemNameSelected", name);
       this.resetDropdownsShows();
-      console.log("filterSelected", { filter, id });
     },
-    fetchMuItemCategories() {
-      this.dropdowns.itemCategoryFilter.items = [
-        { id: 1, name: "Wings" },
-        { id: 2, name: "Lucky" },
-        { id: 3, name: "Ancient" },
-      ];
+    emitMuItemCategoryFilterSelected(name) {
+      this.$emit("muItemCategoryNameSelected", name);
+      console.log("emitMuItemCategoryFilterSelected", name);
+      this.resetDropdownsShows();
     },
-    fetchPostTypes() {
-      this.dropdowns.postTypeFilter.items = [
-        { id: 1, name: "Sell" },
-        { id: 2, name: "Buy" },
-      ];
+    emitPostTypeFilterSelected(name) {
+      this.$emit("postTypeNameSelected", name);
+      console.log("emitPostTypeFilterSelected", name);
+      this.resetDropdownsShows();
     },
-    fetchUsers() {
-      this.dropdowns.userFilter.items = [
-        { id: 1, nickname: "Chars" },
-        { id: 2, nickname: "Sybil" },
-      ];
+    emitUserFilterSelected(nickname) {
+      this.$emit("userNicknameSelected", nickname);
+      console.log("emitUserFilterSelected", nickname);
+      this.resetDropdownsShows();
+    },
+    async fetchMuItemsByName(name) {
+      console.log("searchInputText", name);
+      if (name.length > 0) {
+        try {
+          const response = await fetch(
+            `http://localhost:8088/api/mu-items/contain?name=${name}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: this.accessToken,
+              },
+            }
+          );
+
+          this.searchItems =
+            response.status == 200
+              ? (await response.json()).map((muItem) => muItem.name)
+              : [];
+          console.log(response);
+        } catch (error) {
+          console.error("PostsFilters:fetchMuItemsByName:", error);
+        }
+      }
+    },
+    async fetchMuItemCategories() {
+      try {
+        const response = await fetch(
+          `http://localhost:8088/api/mu-item-categories/list`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: this.accessToken,
+            },
+          }
+        );
+
+        this.dropdowns.itemCategoryFilter.items =
+          response.status == 200 ? await response.json() : [];
+        console.log(response);
+        console.log(this.dropdowns.itemCategoryFilter.items);
+      } catch (error) {
+        console.error("PostsFilters:fetchMuItemCategories:", error);
+      }
+    },
+    async fetchPostTypes() {
+      try {
+        const response = await fetch(
+          `http://localhost:8088/api/post-types/list`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: this.accessToken,
+            },
+          }
+        );
+
+        this.dropdowns.postTypeFilter.items =
+          response.status == 200 ? await response.json() : [];
+        console.log(response);
+      } catch (error) {
+        console.error("PostsFilters:fetchPostTypes:", error);
+      }
+    },
+    async fetchUsers() {
+      try {
+        const response = await fetch(`http://localhost:8088/api/users/list`, {
+          method: "GET",
+          headers: {
+            Authorization: this.accessToken,
+          },
+        });
+
+        this.dropdowns.userFilter.items =
+          response.status == 200 ? await response.json() : [];
+        console.log(response);
+      } catch (error) {
+        console.error("PostsFilters:fetchUsers:", error);
+      }
     },
     init() {
       this.fetchUsers();
@@ -298,7 +332,6 @@ export default {
       this.fetchPostTypes();
     },
     resetDropdownsShows() {
-      // this.dropdowns.sortBy.show = false
       this.dropdowns.filters.show = false;
       this.dropdowns.itemCategoryFilter.show = false;
       this.dropdowns.postTypeFilter.show = false;

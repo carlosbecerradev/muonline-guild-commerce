@@ -102,7 +102,7 @@
           </div>
         </div>
         <!-- Sign in button -->
-        <div v-if="!isLoggedIn">
+        <div v-if="!loggedInData.status">
           <router-link to="/sign-in">
             <button
               class="px-4 py-2 rounded-md hover:bg-gray-700 border border-white focus:outline-none"
@@ -116,7 +116,7 @@
         </div>
 
         <div
-          v-if="isLoggedIn"
+          v-if="loggedInData.status"
           class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
         >
           <!-- User dropdown -->
@@ -142,7 +142,7 @@
                     class="flex text-white"
                     :class="{ 'text-gray-900': dropdown }"
                   >
-                    {{ nickname }}
+                    {{ loggedInData.nickname }}
                     <svg
                       class="-mr-1 ml-2 h-5 w-5"
                       xmlns="http://www.w3.org/2000/svg"
@@ -225,29 +225,20 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   data() {
     return {
       dropdown: false,
       menuDropdown: false,
-      nickname: "Charspunk",
-      isLoggedIn: false,
     };
   },
-  methods: {
-    getUsername() {
-      return this.username;
-    },
-    getNickname() {
-      return this.nickname;
-    },
-    confirmToken() {
-      this.isLoggedIn = true;
-    },
-    signOut() {},
+  computed: {
+    ...mapGetters(["loggedInData"]),
   },
-  mounted() {
-    this.confirmToken();
+  methods: {
+    ...mapActions(["signOut"]),
   },
 };
 </script>

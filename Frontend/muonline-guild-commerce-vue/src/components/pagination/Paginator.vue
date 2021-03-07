@@ -1,13 +1,13 @@
 <template>
-  <div v-if="page >= 0" class="flex justify-center items-center py-6 gap-x-2">
-    <div
+  <div v-if="page >= 0 && totalPages > 1" class="flex justify-center items-center py-6 gap-x-2">
+    <button
       v-if="showPreviousPage()"
       @click="changePage(page - 1)"
-      class="cursor-pointer rounded hover:bg-gray-200"
+      class="rounded hover:bg-gray-200"
     >
-      <div class="text-sm p-1">
+      <div class="px-1 py-1">
         <svg
-          class="h-4 w-5"
+          class="h-5 w-6"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -21,24 +21,25 @@
           />
         </svg>
       </div>
-    </div>
-    <div
+    </button>
+    <button
       @click="changePage(i - 1)"
       v-for="i in generatePagesArray()"
       :key="i"
-      class="flex items-center cursor-pointer rounded hover:bg-gray-200"
-      :class="{ 'bg-yellow-200': i == page + 1 }"
+      class="flex items-center rounded hover:bg-gray-200"
+      :class="{ 'bg-gray-900 hover:bg-gray-900 text-gray-200': i == page + 1 }"
+      :disabled="i == page + 1"
     >
-      <div class="px-2 text-sm">{{ i }}</div>
-    </div>
-    <div
+      <div class="px-3 py-1 text-sm">{{ i }}</div>
+    </button>
+    <button
       v-if="showNextPage()"
       @click="changePage(page + 1)"
-      class="cursor-pointer rounded hover:bg-gray-200"
+      class="rounded hover:bg-gray-200"
     >
-      <div class="text-sm p-1">
+      <div class="px-1 py-1">
         <svg
-          class="h-4 w-5"
+          class="h-5 w-6"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -52,7 +53,7 @@
           />
         </svg>
       </div>
-    </div>
+    </button>
   </div>
 </template>
 
@@ -82,8 +83,18 @@ export default {
       return this.page == this.totalPages - 1 ? false : true;
     },
     generatePagesArray() {
-      var shownPages = 3;
+      var shownPages = 4;
       var result = [];
+
+      if (this.totalPages <= 3) {
+        let i = 1;
+        while (i != this.totalPages + 1) {
+          result.push(i);
+          i++;
+        }
+        return result;
+      }
+
       if (this.page > this.totalPages - shownPages) {
         result.push(this.totalPages - 2, this.totalPages - 1, this.totalPages);
       } else {
