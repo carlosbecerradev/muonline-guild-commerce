@@ -159,7 +159,7 @@ export default {
         if (response.status == 201) {
           const body = await response.json();
           console.log(body);
-          this.$route.push("/user/posts")
+          this.$router.push("/user/posts")
         }
       } catch (error) {
         console.error(error);
