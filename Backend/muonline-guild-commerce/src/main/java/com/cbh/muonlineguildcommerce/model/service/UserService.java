@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import com.cbh.muonlineguildcommerce.dto.response.PostResponse;
 import com.cbh.muonlineguildcommerce.dto.response.UserResponse;
 import com.cbh.muonlineguildcommerce.model.entity.User;
 
@@ -15,4 +16,6 @@ public interface UserService {
 	public User findUserById(Long id);
 
 	public List<UserResponse> findAll();
+
+	public Page<PostResponse> findPostsByEnabled(boolean enabled, int page, int size);
 }

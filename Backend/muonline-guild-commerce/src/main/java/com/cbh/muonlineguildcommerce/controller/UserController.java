@@ -3,6 +3,7 @@ package com.cbh.muonlineguildcommerce.controller;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.Positive;
 
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.cbh.muonlineguildcommerce.dto.response.PageTemplate;
+import com.cbh.muonlineguildcommerce.dto.response.PostResponse;
 import com.cbh.muonlineguildcommerce.dto.response.UserResponse;
 import com.cbh.muonlineguildcommerce.exception.ApiError;
 import com.cbh.muonlineguildcommerce.exception.UserNotFound;
@@ -36,6 +38,7 @@ public class UserController {
 
 	private final UserService userService;
 	private final PageTemplateMapper<UserResponse> pageTemplateMapper;
+	private final PageTemplateMapper<PostResponse> pagePostTemplateMapper;
 
 	@GetMapping
 	public ResponseEntity<PageTemplate<UserResponse>> findAll(
@@ -53,6 +56,22 @@ public class UserController {
 	@GetMapping("/list")
 	public ResponseEntity<List<UserResponse>> findAll() {
 		return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+	}
+
+	@RolesAllowed(value = { "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping("/posts")
+	public ResponseEntity<PageTemplate<PostResponse>> findPosts(
+			@RequestParam(required = false, defaultValue = "0") int page,
+			@RequestParam(required = false, defaultValue = "10") int size,
+			@RequestParam(required = false, defaultValue = "true") boolean enabled) {
+
+		Page<PostResponse> resultPage = null;
+
+		if (resultPage == null) {
+			resultPage = userService.findPostsByEnabled(enabled, page, size);
+		}
+
+		return new ResponseEntity<>(pagePostTemplateMapper.map(resultPage), HttpStatus.OK);
 	}
 
 	@ResponseStatus(HttpStatus.NOT_FOUND)

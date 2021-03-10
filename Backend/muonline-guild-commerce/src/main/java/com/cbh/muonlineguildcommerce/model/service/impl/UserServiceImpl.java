@@ -8,12 +8,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cbh.muonlineguildcommerce.dto.response.PostResponse;
 import com.cbh.muonlineguildcommerce.dto.response.UserResponse;
 import com.cbh.muonlineguildcommerce.exception.UserNotFound;
+import com.cbh.muonlineguildcommerce.mapper.PostMapper;
 import com.cbh.muonlineguildcommerce.mapper.UserMapper;
+import com.cbh.muonlineguildcommerce.model.entity.Post;
 import com.cbh.muonlineguildcommerce.model.entity.User;
 import com.cbh.muonlineguildcommerce.model.repository.UserRepository;
 import com.cbh.muonlineguildcommerce.model.service.UserService;
+import com.cbh.muonlineguildcommerce.security.provider.AuthenticationFacade;
 
 import lombok.AllArgsConstructor;
 
@@ -23,6 +27,8 @@ public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
+	private final PostMapper postMapper;
+	private final AuthenticationFacade authenticationFacade;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -48,6 +54,14 @@ public class UserServiceImpl implements UserService {
 	@Transactional(readOnly = true)
 	public List<UserResponse> findAll() {
 		return userRepository.findByEnabledTrue().stream().map(userMapper::mapEntityToDto).collect(Collectors.toList());
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<PostResponse> findPostsByEnabled(boolean enabled, int page, int size) {
+		Long userId = authenticationFacade.getCurrentLoggedInUser().getId();
+		Page<Post> result = userRepository.findPostsOrderByDesc(userId, enabled, PageRequest.of(page, size));
+		return result.map(postMapper::mapEntityToDto);
 	}
 
 }
