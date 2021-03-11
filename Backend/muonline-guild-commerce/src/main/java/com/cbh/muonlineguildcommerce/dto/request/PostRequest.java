@@ -1,5 +1,6 @@
 package com.cbh.muonlineguildcommerce.dto.request;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
@@ -19,7 +20,7 @@ public class PostRequest {
 	private Long muItemOptionId;
 	@Positive
 	private Long postTypeId;
-	@Positive
+	@Min(value = 0)
 	private Byte itemLevel;
 	@Size(max = 255, message = "Name should be between 0 and 255 characters")
 	private String observation;
