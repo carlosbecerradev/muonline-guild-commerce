@@ -7,16 +7,14 @@
         </h2>
       </div>
       <span class="sr-only">post form</span>
-      <form
-        @submit.prevent="createPost"
-        v-if="muServers != null && postTypes != null && muItemOptions != null"
-      >
+      <form @submit.prevent="createPost">
         <div class="overflow-hidden sm:rounded-md">
           <div class="py-4">
             <div class="grid grid-cols-6 gap-6">
               <div class="col-span-6 sm:col-span-3">
                 <form-label :text="'Post Type'"></form-label>
                 <select
+                  required
                   v-model="post.postTypeId"
                   class="mt-1 block w-full py-1 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-gray-900 text-sm"
                 >
@@ -32,6 +30,7 @@
               <div class="col-span-6 sm:col-span-3">
                 <form-label :text="'Mu Server'"></form-label>
                 <select
+                  required
                   v-model="post.muServerId"
                   class="mt-1 block w-full py-1 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-gray-900 text-sm"
                 >
@@ -69,6 +68,7 @@
               <div class="col-span-6 sm:col-span-4">
                 <form-label :text="'Item Options'"></form-label>
                 <select
+                  required
                   v-model="post.muItemOptionId"
                   class="mt-1 block w-full py-1 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-gray-900"
                 >
@@ -98,7 +98,7 @@
               </div>
 
               <div class="col-span-6 sm:col-span-3">
-                <secondary-button :text="'Cancel'"></secondary-button>
+                <cancel-button></cancel-button>
               </div>
             </div>
           </div>
@@ -112,7 +112,7 @@
 import { mapGetters } from "vuex";
 import PageLayout from "@/layouts/PageLayout.vue";
 import PrimaryButton from "@/components/button/PrimaryButton.vue";
-import SecondaryButton from "@/components/button/SecondaryButton.vue";
+import CancelButton from "@/components/button/CancelButton.vue";
 import FormLabel from "@/components/form/FormLabel.vue";
 import AutocompleteMuItems from "@/components/form/AutocompleteMuItems.vue";
 
@@ -156,15 +156,14 @@ export default {
         });
         console.log("post", this.post);
         console.log(response);
+        const body = await response.json();
+        console.log(body);
         if (response.status == 201) {
-          const body = await response.json();
-          console.log(body);
-          this.$router.push("/user/posts")
+          this.$router.push("/user/posts");
         }
       } catch (error) {
         console.error(error);
       }
-      console.log("submit click");
     },
     async fetchMuServers() {
       this.muServers = await this.fetchResource(
@@ -222,9 +221,9 @@ export default {
   components: {
     PageLayout,
     PrimaryButton,
-    SecondaryButton,
     FormLabel,
     AutocompleteMuItems,
+    CancelButton,
   },
 };
 </script>
