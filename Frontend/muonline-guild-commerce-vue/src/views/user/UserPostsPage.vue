@@ -36,6 +36,18 @@
         </div>
       </section>
 
+      <!-- Posts Filters -->
+      <section class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-6">
+        <user-posts-filters
+          @showAllPost="resetFilters"
+          @muItemNameSelected="filterDataByItemName"
+          @muItemCategoryNameSelected="filterDataByMuItemCategory"
+          @postTypeNameSelected="filterDataByPostType"
+          @muServerNameSelected="filterDataByMuServer"
+          @enabledValueSelected="filterDataByEnabled"
+        ></user-posts-filters>
+      </section>
+
       <section
         v-if="userPosts != null"
         class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 pb-8 lg:pb-12"
@@ -59,6 +71,7 @@ import PrimaryButton from "@/components/button/PrimaryButton.vue";
 import SecondaryButton from "@/components/button/SecondaryButton.vue";
 import UserPosts from "@/components/UserPosts.vue";
 import Paginator from "@/components/pagination/Paginator.vue";
+import UserPostsFilters from "@/components/UserPostsFilters.vue";
 
 export default {
   data() {
@@ -73,6 +86,36 @@ export default {
     ...mapGetters(["accessToken", "loggedInData"]),
   },
   methods: {
+    resetFilters() {
+      this.currentPage = 0;
+      this.userPostsUrl = `http://localhost:8088/api/users/posts?enabled=true`;
+      this.updatePage(0);
+    },
+    filterDataByItemName(name) {
+      this.currentPage = 0;
+      this.userPostsUrl = `http://localhost:8088/api/users/posts?muItemName=${name}&enabled=true`;
+      this.updatePage(0);
+    },
+    filterDataByMuItemCategory(name) {
+      this.currentPage = 0;
+      this.userPostsUrl = `http://localhost:8088/api/users/posts?muItemCategoryName=${name}&enabled=true`;
+      this.updatePage(0);
+    },
+    filterDataByPostType(name) {
+      this.currentPage = 0;
+      this.userPostsUrl = `http://localhost:8088/api/users/posts?postTypeName=${name}&enabled=true`;
+      this.updatePage(0);
+    },
+    filterDataByMuServer(name) {
+      this.currentPage = 0;
+      this.userPostsUrl = `http://localhost:8088/api/users/posts?muServerName=${name}&enabled=true`;
+      this.updatePage(0);
+    },
+    filterDataByEnabled(value) {
+      this.currentPage = 0;
+      this.userPostsUrl = `http://localhost:8088/api/users/posts?enabled=${value}`;
+      this.updatePage(0);
+    },
     async fetchUserPostsPage(url) {
       try {
         const response = await fetch(url, {
@@ -112,6 +155,7 @@ export default {
     SecondaryButton,
     UserPosts,
     Paginator,
+    UserPostsFilters,
   },
 };
 </script>
