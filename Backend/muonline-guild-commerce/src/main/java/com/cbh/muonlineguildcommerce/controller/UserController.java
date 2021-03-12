@@ -63,10 +63,26 @@ public class UserController {
 	public ResponseEntity<PageTemplate<PostResponse>> findPosts(
 			@RequestParam(required = false, defaultValue = "0") int page,
 			@RequestParam(required = false, defaultValue = "10") int size,
-			@RequestParam(required = false, defaultValue = "true") boolean enabled) {
+			@RequestParam(required = false, defaultValue = "true") boolean enabled,
+			@RequestParam(required = false, defaultValue = "") String muItemName,
+			@RequestParam(required = false, defaultValue = "") String muItemCategoryName,
+			@RequestParam(required = false, defaultValue = "") String postTypeName,
+			@RequestParam(required = false, defaultValue = "") String muServerName) {
 
 		Page<PostResponse> resultPage = null;
 
+		if (!muItemName.equalsIgnoreCase("")) {
+			resultPage = userService.findPostsByEnabledAndMuItemName(enabled, muItemName, page, size);
+		}
+		if (!muItemCategoryName.equalsIgnoreCase("")) {
+			resultPage = userService.findPostsByEnabledAndMuItemCategoryName(enabled, muItemCategoryName, page, size);
+		}
+		if (!postTypeName.equalsIgnoreCase("")) {
+			resultPage = userService.findPostsByEnabledAndPostTypeName(enabled, postTypeName, page, size);
+		}
+		if (!muServerName.equalsIgnoreCase("")) {
+			resultPage = userService.findPostsByEnabledAndMuServerName(enabled, muServerName, page, size);
+		}
 		if (resultPage == null) {
 			resultPage = userService.findPostsByEnabled(enabled, page, size);
 		}

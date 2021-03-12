@@ -20,4 +20,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query("SELECT p FROM Post p WHERE p.user.id = :id AND p.enabled = :enabled ORDER BY p.createdDate DESC")
 	Page<Post> findPostsOrderByDesc(Long id, boolean enabled, Pageable pageable);
+
+	@Query("SELECT p FROM Post p WHERE p.user.id = :userId AND p.muItem.name = :muItemName AND p.enabled = :enabled ORDER BY p.createdDate DESC")
+	Page<Post> findPostsByLoggedInUserAndMuItemNameAndEnabledOrderByDesc(Long userId, String muItemName,
+			boolean enabled, Pageable pageable);
+
+	@Query("SELECT p FROM Post p WHERE p.user.id = :userId AND p.muItem.muItemCategory.name = :muItemCategoryName AND p.enabled = :enabled ORDER BY p.createdDate DESC")
+	Page<Post> findPostsByLoggedInUserAndMuItemCategoryNameAndEnabledOrderByDesc(Long userId, String muItemCategoryName,
+			boolean enabled, Pageable pageable);
+
+	@Query("SELECT p FROM Post p WHERE p.user.id = :userId AND p.postType.name = :postTypeName AND p.enabled = :enabled ORDER BY p.createdDate DESC")
+	Page<Post> findPostsByLoggedInUserAndPostTypeNameAndEnabledOrderByDesc(Long userId, String postTypeName,
+			boolean enabled, Pageable pageable);
+
+	@Query("SELECT p FROM Post p WHERE p.user.id = :userId AND p.muServer.name = :muServerName AND p.enabled = :enabled ORDER BY p.createdDate DESC")
+	Page<Post> findPostsByLoggedInUserAndMuServerNameAndEnabledOrderByDesc(Long userId, String muServerName,
+			boolean enabled, Pageable pageable);
 }

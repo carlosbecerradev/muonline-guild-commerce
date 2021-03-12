@@ -64,4 +64,43 @@ public class UserServiceImpl implements UserService {
 		return result.map(postMapper::mapEntityToDto);
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public Page<PostResponse> findPostsByEnabledAndMuItemName(boolean enabled, String muItemName, int page, int size) {
+		Long userId = authenticationFacade.getCurrentLoggedInUser().getId();
+		Page<Post> result = userRepository.findPostsByLoggedInUserAndMuItemNameAndEnabledOrderByDesc(userId, muItemName,
+				enabled, PageRequest.of(page, size));
+		return result.map(postMapper::mapEntityToDto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<PostResponse> findPostsByEnabledAndMuItemCategoryName(boolean enabled, String muItemCategoryName,
+			int page, int size) {
+		Long userId = authenticationFacade.getCurrentLoggedInUser().getId();
+		Page<Post> result = userRepository.findPostsByLoggedInUserAndMuItemCategoryNameAndEnabledOrderByDesc(userId,
+				muItemCategoryName, enabled, PageRequest.of(page, size));
+		return result.map(postMapper::mapEntityToDto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<PostResponse> findPostsByEnabledAndPostTypeName(boolean enabled, String postTypeName, int page,
+			int size) {
+		Long userId = authenticationFacade.getCurrentLoggedInUser().getId();
+		Page<Post> result = userRepository.findPostsByLoggedInUserAndPostTypeNameAndEnabledOrderByDesc(userId,
+				postTypeName, enabled, PageRequest.of(page, size));
+		return result.map(postMapper::mapEntityToDto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<PostResponse> findPostsByEnabledAndMuServerName(boolean enabled, String muServerName, int page,
+			int size) {
+		Long userId = authenticationFacade.getCurrentLoggedInUser().getId();
+		Page<Post> result = userRepository.findPostsByLoggedInUserAndMuServerNameAndEnabledOrderByDesc(userId,
+				muServerName, enabled, PageRequest.of(page, size));
+		return result.map(postMapper::mapEntityToDto);
+	}
+
 }
