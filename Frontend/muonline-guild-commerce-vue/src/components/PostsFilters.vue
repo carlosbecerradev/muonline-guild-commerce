@@ -8,7 +8,7 @@
     />
 
     <!-- Shows-->
-    <div class="relative">
+    <div class="relative z-50">
       <div class="grid grid-cols-12">
         <div
           class="relative col-span-6 sm:col-span-3 hover:bg-gray-200 cursor-pointer"
@@ -88,7 +88,7 @@
               <!-- Filter by item category-->
               <div
                 v-if="dropdowns.itemCategoryFilter.show"
-                class="absolute top-full left-0 bg-gray-200 max-h-40 min-w-full w-auto overflow-auto z-20"
+                class="absolute top-full left-0 bg-gray-200 max-h-40 min-w-full w-auto overflow-auto"
               >
                 <div
                   @click="emitMuItemCategoryFilterSelected(item.name)"
@@ -128,7 +128,7 @@
               <!-- Filter by post type-->
               <div
                 v-if="dropdowns.postTypeFilter.show"
-                class="absolute top-full left-0 bg-gray-200 max-h-40 min-w-full w-auto overflow-auto z-20"
+                class="absolute top-full left-0 bg-gray-200 max-h-40 min-w-full w-auto overflow-auto"
               >
                 <div
                   @click="emitPostTypeFilterSelected(item.name)"
@@ -168,7 +168,7 @@
               <!-- Filter by post type-->
               <div
                 v-if="dropdowns.userFilter.show"
-                class="absolute top-full left-0 bg-gray-200 max-h-40 min-w-full w-auto overflow-auto z-20"
+                class="absolute top-full left-0 bg-gray-200 max-h-40 min-w-full w-auto overflow-auto"
               >
                 <div
                   @click="emitUserFilterSelected(item.nickname)"
