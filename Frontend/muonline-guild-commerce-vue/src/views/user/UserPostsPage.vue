@@ -6,9 +6,9 @@
         <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-8 lg:py-12">
           <!-- This example requires Tailwind CSS v2.0+ -->
           <div class="sm:flex md:items-center md:justify-between">
-            <div class="flex-1">
+            <div v-if="loggedInData.status" class="flex-1">
               <h2 class="font-extrabold text-yellow-300 text-4xl">
-                {{ nickname }} Posts
+                {{ loggedInData.nickname }} Posts
               </h2>
             </div>
             <div v-if="true" class="mt-5 sm:mt-0 flex items-center space-x-4">
@@ -35,25 +35,83 @@
           </div>
         </div>
       </section>
+
+      <section
+        v-if="userPosts != null"
+        class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 pb-8 lg:pb-12"
+      >
+        <user-posts :data="userPosts.data"></user-posts>
+        <!-- Posts pagination -->
+        <paginator
+          :page="userPosts.description.number"
+          :totalPages="userPosts.description.totalPages"
+          @pageNumber="updatePage"
+        ></paginator>
+      </section>
     </default-layout>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import PrimaryButton from "@/components/button/PrimaryButton.vue";
 import SecondaryButton from "@/components/button/SecondaryButton.vue";
+import UserPosts from "@/components/UserPosts.vue";
+import Paginator from "@/components/pagination/Paginator.vue";
 
 export default {
   data() {
     return {
-      nickname: "Charspunk",
+      userPosts: null,
+      currentPage: 0,
+      pageSize: 6,
+      userPostsUrl: "",
     };
+  },
+  computed: {
+    ...mapGetters(["accessToken", "loggedInData"]),
+  },
+  methods: {
+    async fetchUserPostsPage(url) {
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            Authorization: this.accessToken,
+          },
+        });
+
+        this.userPosts = response.status == 200 ? await response.json() : null;
+
+        console.log(response);
+        console.info("userPosts: ", this.userPosts);
+      } catch (error) {
+        console.error("fetchUserPostsPage:fetchUserPostsPage:", error);
+      }
+    },
+    updatePage(pageNumber) {
+      this.currentPage = pageNumber;
+      this.fetchUserPostsPage(
+        `${this.userPostsUrl}&page=${this.currentPage}&size=${this.pageSize}`
+      );
+      // console.log("pageNumber", pageNumber);
+      // console.log("currentPage", this.currentPage);
+    },
+    init() {
+      this.userPostsUrl = `http://localhost:8088/api/users/posts?enabled=true`;
+      this.updatePage(0);
+    },
+  },
+  mounted() {
+    this.init();
   },
   components: {
     DefaultLayout,
     PrimaryButton,
     SecondaryButton,
+    UserPosts,
+    Paginator,
   },
 };
 </script>
