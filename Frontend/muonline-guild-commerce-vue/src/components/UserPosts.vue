@@ -12,10 +12,12 @@
           >
             <!-- Item name, item level and item options -->
             <div class="mb-3">
+              <div class="text-gray-800">{{ post.postType.name }}</div>
               <div class="text-gray-900 font-bold">
                 {{ post.muItem.name }} <span> +{{ post.itemLevel }}</span>
               </div>
               <div class="text-gray-800">{{ post.muItemOption.name }}</div>
+              <div class="text-gray-800">{{ post.muServer.name }}</div>
             </div>
             <div class="mb-3 text-sm">
               <div v-if="post.contact" class="text-gray-600">
@@ -31,7 +33,7 @@
               <div class="text-gray-600">{{ post.createdDate }}</div>
             </footer>
           </div>
-          <div class="absolute top-0 right-0">
+          <div v-if="post.enabled" class="absolute top-0 right-0">
             <div class="mt-4 mr-4">
               <button @click="actionsDropdown(post.id)">
                 <svg
